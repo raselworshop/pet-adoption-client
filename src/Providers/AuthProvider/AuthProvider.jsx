@@ -1,5 +1,5 @@
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { createContext, useState } from "react";
+import { createUserWithEmailAndPassword, onAuthStateChanged, sendPasswordResetEmail, signInWithEmailAndPassword, signOut, updateProfile } from "firebase/auth";
+import { createContext, useEffect, useState } from "react";
 import {auth, analytics} from "../../Firebase/firebase.config";
 import { logEvent } from "firebase/analytics";
 
@@ -13,9 +13,12 @@ function logLoginEvents(user){
 export const AuthContext = createContext(null);
 
 const AuthProvider = ({ children }) => {
-    const [ user, setUser ] = useState('')
-    const createUser = (email, password) =>{
-        return createUserWithEmailAndPassword(auth, email, password)
+    const [loading, setLoading] = useState(true)
+    const [ user, setUser ] = useState(null)
+
+    const createUser = async(email, password) =>{
+        setLoading(true)
+        return await createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential)=>{
             const user = userCredential.user;
             setUser(user)
@@ -23,11 +26,43 @@ const AuthProvider = ({ children }) => {
             return user;
         })
     }
+    const userSignIn = (email, password)=>{
+        setLoading(true)
+        return signInWithEmailAndPassword(auth, email, password)
+    }
+    const updateUserProfile=async (fullname, photo)=>{
+        setLoading(true)
+        return await updateProfile(auth.currentUser, {
+            displayName: fullname, photoURL: photo
+        })
+    }
+    const sendResetEmail=async(email)=>{
+        setLoading(true)
+        return await sendPasswordResetEmail(auth, email)
+    }
+    const signOutUser=()=>{
+        setLoading(true)
+        return signOut(auth)
+    }
+
+    useEffect(()=>{
+        const unsubscribe = onAuthStateChanged(auth, currentUser=>{
+            setUser(currentUser)
+            console.log("Current user captured",currentUser)
+        })
+        return ()=>{
+            return unsubscribe();
+        }
+    }, [])
 
     const authInfo = {
         user,
         setUser,
         createUser,
+        userSignIn,
+        updateUserProfile,
+        sendResetEmail,
+        signOutUser,
     }
     return (
         <AuthContext.Provider value={authInfo}>

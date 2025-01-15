@@ -4,7 +4,8 @@ import Select from 'react-select';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import useCloudinary from '../../../Hooks/useCloudinary';
-import axios from 'axios';
+import { Button } from '@/components/components/ui/button';
+import ButtonLoading from '@/components/components/ui/ButtonLoading';
 
 const AddPetForm = () => {
   const [longDescription, setLongDescription] = useState('');
@@ -72,35 +73,37 @@ const AddPetForm = () => {
 
   return (
     <Formik initialValues={initialValues} onSubmit={handleSubmit}>
-      {({ setFieldValue, isSubmitting, values }) => (
+      {({ setFieldValue, isSubmitting }) => (
         <Form>
           <div>
             <label htmlFor="petImage">Pet Image</label>
             <input
+              className="m-2"
               type="file"
               name="petImage"
               accept="image/*"
               onChange={handleImageUpload}
             />
             <ErrorMessage name="petImage" component="div" />
-            {uploading && <div>Uploading...</div>} {/* Display loading indicator */}
+            {uploading && <ButtonLoading />}
           </div>
 
           <div>
             <label htmlFor="petName">Pet Name</label>
-            <Field type="text" name="petName" />
+            <Field className="dark:bg-gray-700 border m-2" type="text" name="petName" />
             <ErrorMessage name="petName" component="div" />
           </div>
 
           <div>
             <label htmlFor="petAge">Pet Age</label>
-            <Field type="text" name="petAge" />
+            <Field className="dark:bg-gray-700 border m-2" type="text" name="petAge" />
             <ErrorMessage name="petAge" component="div" />
           </div>
 
           <div>
             <label htmlFor="petCategory">Pet Category</label>
             <Select
+              className=" bg-gray-300 dark:bg-gray-700 border m-2"
               name="petCategory"
               options={petCategories}
               onChange={(option) => setFieldValue('petCategory', option.value)}
@@ -110,19 +113,20 @@ const AddPetForm = () => {
 
           <div>
             <label htmlFor="petLocation">Pet Location</label>
-            <Field type="text" name="petLocation" />
+            <Field className="dark:bg-gray-700 border m-2" type="text" name="petLocation" />
             <ErrorMessage name="petLocation" component="div" />
           </div>
 
-          <div>
-            <label htmlFor="shortDescription">Short Description</label>
-            <Field type="text" name="shortDescription" />
+          <div className='my-2 flex flex-col lg:flex-row items-center'>
+            <label htmlFor="shortDescription">Short Description: </label>
+            <Field className="dark:bg-gray-700 border m-2" type="text" name="shortDescription" />
             <ErrorMessage name="shortDescription" component="div" />
           </div>
 
-          <div>
+          <div className='my-2'>
             <label htmlFor="longDescription">Long Description</label>
             <ReactQuill
+              className="m-2"
               value={longDescription}
               onChange={(value) => {
                 setLongDescription(value);
@@ -132,9 +136,9 @@ const AddPetForm = () => {
             <ErrorMessage name="longDescription" component="div" />
           </div>
 
-          <button type="submit" disabled={isSubmitting}>
+          <Button className="my-2" type="submit" disabled={isSubmitting}>
             Submit
-          </button>
+          </Button>
           <ErrorMessage name="submit" component="div" />
           {petImageUrl && (
             <div className="flex">

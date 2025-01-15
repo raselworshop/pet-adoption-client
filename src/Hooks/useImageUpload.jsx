@@ -5,7 +5,7 @@ const useImageUpload = () => {
     const [uploading, setUploading] = useState(false);
     const [error, setError] = useState(null);
 
-    const uploadImage = async (file) => {
+    const uploadUserImage = async (file) => {
         setUploading(true);
         setError(null);
 
@@ -24,7 +24,7 @@ const useImageUpload = () => {
         }
     };
 
-    return { uploadImage, uploading, error };
+    return { uploadUserImage, uploading, error };
 };
 
 export default useImageUpload;

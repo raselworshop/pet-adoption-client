@@ -7,6 +7,7 @@ import PetListing from "../Pages/PetListing/PetListing";
 import DonationCampaign from "../Pages/DonationCampaign/DonationCampaign";
 import DashboardLayout from "../Layout/DashboardLayout";
 import AddPetForm from "../Pages/Dashboard/AddPet/AddPetForm";
+import ResetPassword from "../Pages/AuthRelated/PasswordReset/PasswordReset";
 
 const router = createBrowserRouter([
     {
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
         {
             path: 'donationCampaign',
             element: <DonationCampaign/>
+        },
+        {
+            path: 'reset-password',
+            element: <ResetPassword/>
         }
       ]
     },

@@ -19,8 +19,17 @@ import {
     DropdownMenuShortcut,
 } from "../components/ui/dropdown-menu"
 import { Link } from "react-router-dom";
+import useAuth from "../../Hooks/useAuth";
+import toast from "react-hot-toast";
 
 export function MobileMenu() {
+    const { signOutUser } = useAuth()
+    const handleSignOut=()=>{
+        signOutUser()
+        .then(()=>{
+            toast.success("You're logged out succesfull")
+        })
+    }
     return (
 
         <>
@@ -105,7 +114,7 @@ export function MobileMenu() {
             <DropdownMenuSeparator />
             <DropdownMenuItem>
                 <LogOut />
-                <span>Log out</span>
+                <span onClick={handleSignOut}>Log out</span>
                 <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
             </DropdownMenuItem>
         </>

@@ -7,8 +7,10 @@ import ProfileDropdownMenu from '../ProfileDropDown/ProfileDropdownMenu';
 import { Avatar, AvatarFallback, AvatarImage } from '../components/ui/avatar';
 import { MenuIcon, XIcon } from 'lucide-react';
 import MobileMenu from '../Navbar/MobileMenu';
+import useAuth from '../../Hooks/useAuth';
 
 const Navbar = () => {
+    const { user } = useAuth()
     const [isOpen, setIsOpen] = useState(false);
 
     useEffect(() => {
@@ -39,7 +41,7 @@ const Navbar = () => {
     };
 
     return (
-        <header className='px-5 lg:-mx-10 dark:bg-gray-950 bg-gray-300 fixed top-0 z-50 w-full bg-opacity-80 dark:bg-opacity-80 backdrop-blur-md'>
+        <header className=' lg:-mx-10 dark:bg-gray-950 bg-gray-300 fixed top-0 z-50 w-full bg-opacity-80 dark:bg-opacity-80 backdrop-blur-md'>
             <nav className="py-4 lg:px-10 flex justify-between items-center">
                 <div className="flex items-center">
                     <NavLink to="/" className="text-xl font-bold">
@@ -108,7 +110,7 @@ const Navbar = () => {
                                 <DropdownMenuTrigger asChild>
                                     <div onClick={handleAvatarClick} className="dropdown">
                                         <Avatar>
-                                            <AvatarImage src="https://github.com/shadcn.png" />
+                                            <AvatarImage src={user?.photoURL} />
                                             <AvatarFallback>CN</AvatarFallback>
                                         </Avatar>
                                     </div>

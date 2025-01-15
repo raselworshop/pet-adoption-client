@@ -4,8 +4,15 @@ import * as Yup from 'yup'; // For validation schema
 import signinLottie from '../../../assets/lottie/signin.json'
 import ButtonLoading from '../../../components/components/ui/ButtonLoading';
 import Lottie from 'lottie-react';
+import SocialLogin from '../SocialLogin/SocialLogin';
+import { DropdownMenuSeparator } from '@radix-ui/react-dropdown-menu';
+import { Link, useNavigate } from 'react-router-dom';
+import useAuth from '../../../Hooks/useAuth';
+import toast from 'react-hot-toast';
 
 const Login = () => {
+    const navigate = useNavigate()
+    const { userSignIn } = useAuth()
     // Initial Values
     const initialValues = {
         email: '',
@@ -26,14 +33,28 @@ const Login = () => {
     const onSubmit = (values, { setSubmitting }) => {
         console.log('Form Data:', values);
         alert('Login Successful!');
-        setSubmitting(false); // Stop the loading state
+        userSignIn(values.email, values.password)
+            .then(result => {
+                console.log(result.user)
+                if(result.user.email){
+                    toast.success('user successfully logged in')
+                }
+            })
+            .catch(error=> toast.error(error.message))
+        setSubmitting(false); 
     };
 
+    const handleNavigate = () => {
+        navigate('/reset-password')
+    }
     return (
         <div className="container mx-auto flex flex-col md:flex-row items-center justify-center min-h-screen dark:bg-gray-800">
             <div className='flex-1 p-5 flex items-center justify-center'>
-                <div className="p-6 rounded-lg shadow-lg w-80 dark:bg-gray-700">
+                <div className="p-6 rounded-lg shadow-lg w-full bg-slate-300 dark:bg-gray-700">
                     <h2 className="text-xl font-bold mb-4">Welcome back to Login</h2>
+                    <DropdownMenuSeparator />
+                    <SocialLogin />
+                    <DropdownMenuSeparator />
                     <Formik
                         initialValues={initialValues}
                         validationSchema={validationSchema}
@@ -49,6 +70,7 @@ const Login = () => {
                                     <Field
                                         type="email"
                                         id="email"
+                                        autoComplete="email"
                                         name="email"
                                         className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 dark:text-white dark:bg-gray-600"
                                     />
@@ -67,6 +89,7 @@ const Login = () => {
                                     <Field
                                         type="password"
                                         id="password"
+                                        autoComplete="password"
                                         name="password"
                                         className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 dark:text-white dark:bg-gray-600"
                                     />
@@ -75,6 +98,13 @@ const Login = () => {
                                         component="div"
                                         className="text-red-500 text-sm mt-1"
                                     />
+                                </div>
+                                <div className="mb-2">
+                                    <button type="button"
+                                        onClick={handleNavigate}
+                                        className="text-sm text-blue-500 hover:underline" >
+                                        Forgotten Email or Password?
+                                    </button>
                                 </div>
 
                                 {/* Submit Button */}
@@ -86,6 +116,13 @@ const Login = () => {
                                 >
                                     {isSubmitting ? <ButtonLoading /> : 'Login'}
                                 </button>
+                                <div>
+                                    <DropdownMenuSeparator />
+                                    <button className='hover:text-blue-700 hover:underline'>
+                                        <Link to={'/register'}>Register Here</Link>
+                                    </button>
+                                    <DropdownMenuSeparator />
+                                </div>
                             </Form>
                         )}
                     </Formik>
