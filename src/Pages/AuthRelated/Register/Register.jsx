@@ -76,38 +76,38 @@ const Register = () => {
         try {
             const response = await createUser(values.email, values.password);
             console.log('User creation response:', response); //why only from here consoled above not under
-             updateUserProfile(values.fullname, values.photoURL)
-            .then(async(result)=>{
-                console.log('send to data base: ', result)
-                const userinfo = {
-                    name: values.fullname,
-                    email: values.email,
-                    photo: values.photoURL,
-                    userName: values.username,
-                    role: 'user'
-                }
-                console.table(userinfo)
-                try {
-                    const res = await axiosPublic.post('/users', userinfo);
-                    if(res.data.insertedId){
-                        toast.success(`successfully created user is ${values.fullname}`)
+            updateUserProfile(values.fullname, values.photoURL)
+                .then(async (result) => {
+                    console.log('send to data base: ', result)
+                    const userinfo = {
+                        name: values.fullname,
+                        email: values.email,
+                        photo: values.photoURL,
+                        userName: values.username,
+                        role: 'user'
                     }
-                    console.log('Response:', res.data);
-                    console.log('Axios Base URL:', axiosPublic.defaults.baseURL);
+                    console.table(userinfo)
+                    try {
+                        const res = await axiosPublic.post('/users', userinfo);
+                        if (res.data.insertedId) {
+                            toast.success(`successfully created user is ${values.fullname}`)
+                        }
+                        console.log('Response:', res.data);
+                        console.log('Axios Base URL:', axiosPublic.defaults.baseURL);
 
-                } catch (error) {
-                    if (error.response) {
-                        console.error('Server Error:', error.response.data);
-                        toast.error(error.response.data)
-                    } else if (error.request) {
-                        toast.error(error.request)
-                        console.error('No Response Received:', error.request);
-                    } else {
-                        toast.error(error.message)
-                        console.error('Axios Error:', error.message);
+                    } catch (error) {
+                        if (error.response) {
+                            console.error('Server Error:', error.response.data);
+                            toast.error(error.response.data)
+                        } else if (error.request) {
+                            toast.error(error.request)
+                            console.error('No Response Received:', error.request);
+                        } else {
+                            toast.error(error.message)
+                            console.error('Axios Error:', error.message);
+                        }
                     }
-                }
-            })
+                })
 
         } catch (error) {
             console.error('User creation error:', error);
@@ -201,7 +201,7 @@ const Register = () => {
                                     <SocialLogin></SocialLogin>
                                 </div>
                                 <DropdownMenuSeparator />
-                                <div className='flex-1'>
+                                <div className='md:hidden lg:block flex-1'>
                                     {profileImageUrl && (
                                         <div className='flex'>
                                             <img src={profileImageUrl} alt="Profile Preview"
@@ -214,7 +214,16 @@ const Register = () => {
                 </Formik>
             </div>
             <div className='flex-1 p-5 '>
-                <Lottie className='w-fit mx-auto' animationData={signupLottie}></Lottie>
+                <div>
+                    <Lottie className='w-fit mx-auto' animationData={signupLottie}></Lottie>
+                </div>
+                <div className='md:block lg:hidden hidden flex-1'>
+                    {profileImageUrl && (
+                        <div className='flex'>
+                            <img src={profileImageUrl} alt="Profile Preview"
+                                style={{ width: '280px', height: '200px', marginTop: '10px' }} />
+                        </div>)}
+                </div>
             </div>
         </div>
     );

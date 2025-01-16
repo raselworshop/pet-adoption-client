@@ -22,7 +22,7 @@ import useAuth from "../../Hooks/useAuth";
 import toast from "react-hot-toast";
 
 export function ProfileDropdownMenu() {
-    const { signOutUser } = useAuth()
+    const { user, signOutUser } = useAuth()
     const handleSignOut=()=>{
         signOutUser()
         .then(()=>{
@@ -30,8 +30,8 @@ export function ProfileDropdownMenu() {
         })
     }
     return (
-
-        <DropdownMenuContent className="w-56">
+        <>
+        {user && <DropdownMenuContent className="w-56">
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
@@ -74,8 +74,8 @@ export function ProfileDropdownMenu() {
                 <span onClick={handleSignOut}>Log out</span>
                 <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
             </DropdownMenuItem>
-        </DropdownMenuContent>
-
+        </DropdownMenuContent>}
+        </>
     )
 }
 

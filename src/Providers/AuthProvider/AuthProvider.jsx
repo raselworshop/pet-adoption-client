@@ -6,7 +6,7 @@ import { logEvent } from "firebase/analytics";
 function logLoginEvents(user){
     logEvent(analytics, 'sign-up', {
         method: 'email',
-        user_id: user.uid
+        user_id: user?.uid
     })
 }
 
@@ -48,6 +48,7 @@ const AuthProvider = ({ children }) => {
     useEffect(()=>{
         const unsubscribe = onAuthStateChanged(auth, currentUser=>{
             setUser(currentUser)
+            logLoginEvents(currentUser)
             console.log("Current user captured",currentUser)
         })
         return ()=>{

@@ -8,6 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '../components/ui/avatar';
 import { MenuIcon, XIcon } from 'lucide-react';
 import MobileMenu from '../Navbar/MobileMenu';
 import useAuth from '../../Hooks/useAuth';
+import logo from '../../assets/pet-adoption.webp'
 
 const Navbar = () => {
     const { user } = useAuth()
@@ -41,9 +42,12 @@ const Navbar = () => {
     };
 
     return (
-        <header className=' lg:-mx-10 dark:bg-gray-950 bg-gray-300 fixed top-0 z-50 w-full bg-opacity-80 dark:bg-opacity-80 backdrop-blur-md'>
-            <nav className="py-4 lg:px-10 flex justify-between items-center">
+        <header className='md:-mx-4 lg:-mx-10 dark:bg-gray-950 bg-gray-300 fixed top-0 z-50 w-full bg-opacity-80 dark:bg-opacity-80 backdrop-blur-md'>
+            <nav className="py-4 md:px-5 lg:px-10 flex justify-between items-center">
                 <div className="flex items-center">
+                    <div className='w-10 h-10'>
+                    <img src={logo} alt="" />
+                    </div>
                     <NavLink to="/" className="text-xl font-bold">
                         Pet Adoption
                     </NavLink>
@@ -90,22 +94,24 @@ const Navbar = () => {
                                     Donation Campaigns
                                 </NavLink>
                             </NavigationMenuItem>
-                            <NavigationMenuItem>
-                                <NavLink
-                                    to="/login"
-                                    className="hover:text-blue-500 cursor-pointer"
-                                >
-                                    Login
-                                </NavLink>
-                            </NavigationMenuItem>
-                            <NavigationMenuItem>
-                                <NavLink
-                                    to="/register"
-                                    className="hover:text-blue-500 cursor-pointer"
-                                >
-                                    Register
-                                </NavLink>
-                            </NavigationMenuItem>
+                            {!user && <>
+                                <NavigationMenuItem>
+                                    <NavLink
+                                        to="/login"
+                                        className="hover:text-blue-500 cursor-pointer"
+                                    >
+                                        Login
+                                    </NavLink>
+                                </NavigationMenuItem>
+                                <NavigationMenuItem>
+                                    <NavLink
+                                        to="/register"
+                                        className="hover:text-blue-500 cursor-pointer"
+                                    >
+                                        Register
+                                    </NavLink>
+                                </NavigationMenuItem>
+                            </>}
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
                                     <div onClick={handleAvatarClick} className="dropdown">

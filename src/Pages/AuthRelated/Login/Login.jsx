@@ -9,6 +9,7 @@ import { DropdownMenuSeparator } from '@radix-ui/react-dropdown-menu';
 import { Link, useNavigate } from 'react-router-dom';
 import useAuth from '../../../Hooks/useAuth';
 import toast from 'react-hot-toast';
+import cat from '../../../assets/lottie/cat.json'
 
 const Login = () => {
     const navigate = useNavigate()
@@ -36,12 +37,12 @@ const Login = () => {
         userSignIn(values.email, values.password)
             .then(result => {
                 console.log(result.user)
-                if(result.user.email){
+                if (result.user.email) {
                     toast.success('user successfully logged in')
                 }
             })
-            .catch(error=> toast.error(error.message))
-        setSubmitting(false); 
+            .catch(error => toast.error(error.message))
+        setSubmitting(false);
     };
 
     const handleNavigate = () => {
@@ -51,9 +52,16 @@ const Login = () => {
         <div className="container mx-auto flex flex-col md:flex-row items-center justify-center min-h-screen dark:bg-gray-800">
             <div className='flex-1 p-5 flex items-center justify-center'>
                 <div className="p-6 rounded-lg shadow-lg w-full bg-slate-300 dark:bg-gray-700">
-                    <h2 className="text-xl font-bold mb-4">Welcome back to Login</h2>
-                    <DropdownMenuSeparator />
-                    <SocialLogin />
+                    <h2 className="text-xl text-center font-bold mb-4">Welcome back to Login</h2>
+                   
+                    <div className='w-full h-[250px] flex flex-col md:flex-row gap-3'>
+                        <div className='flex-1 hidden md:block'>
+                            <Lottie className='h-full w-full' animationData={cat}></Lottie>
+                        </div>
+                        <div className='flex-1'>
+                            <SocialLogin className="h-2/3" />
+                        </div>
+                    </div>
                     <DropdownMenuSeparator />
                     <Formik
                         initialValues={initialValues}

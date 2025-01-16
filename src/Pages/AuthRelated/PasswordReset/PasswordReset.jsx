@@ -21,7 +21,7 @@ const ResetPassword = () => {
     // Form Submission Handler
     const onSubmit = async (values, { setSubmitting }) => {
         try {
-            await sendResetEmail(auth, values.email);
+            await sendResetEmail(values.email);
             toast.success('Password reset link sent to your email!');
         } catch (error) {
             toast.error('Error sending password reset email');

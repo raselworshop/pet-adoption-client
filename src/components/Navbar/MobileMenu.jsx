@@ -23,12 +23,12 @@ import useAuth from "../../Hooks/useAuth";
 import toast from "react-hot-toast";
 
 export function MobileMenu() {
-    const { signOutUser } = useAuth()
-    const handleSignOut=()=>{
+    const { user, signOutUser } = useAuth()
+    const handleSignOut = () => {
         signOutUser()
-        .then(()=>{
-            toast.success("You're logged out succesfull")
-        })
+            .then(() => {
+                toast.success("You're logged out succesfull")
+            })
     }
     return (
 
@@ -52,9 +52,9 @@ export function MobileMenu() {
                     <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
-                    <LayoutDashboard/>
-                    <Link  to={'/dashboard'}>
-                    Dashboard
+                    <LayoutDashboard />
+                    <Link to={'/dashboard'}>
+                        Dashboard
                     </Link>
                     <DropdownMenuShortcut>⌘D</DropdownMenuShortcut>
                 </DropdownMenuItem>
@@ -79,24 +79,26 @@ export function MobileMenu() {
                         Donation Campaigns
                     </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem>
-                    <LogInIcon />
-                    <Link
-                        to="/login"
-                        className="hover:text-blue-500 cursor-pointer"
-                    >
-                        Login
-                    </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                    <RegexIcon/>
-                    <Link
-                        to="/register"
-                        className="hover:text-blue-500 cursor-pointer"
-                    >
-                        Register
-                    </Link>
-                </DropdownMenuItem>
+                {!user && (<>
+                    <DropdownMenuItem>
+                        <LogInIcon />
+                        <Link
+                            to="/login"
+                            className="hover:text-blue-500 cursor-pointer"
+                        >
+                            Login
+                        </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                        <RegexIcon />
+                        <Link
+                            to="/register"
+                            className="hover:text-blue-500 cursor-pointer"
+                        >
+                            Register
+                        </Link>
+                    </DropdownMenuItem>
+                </>)}
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
@@ -112,11 +114,11 @@ export function MobileMenu() {
                 <span>API</span>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            {user && <DropdownMenuItem>
                 <LogOut />
                 <span onClick={handleSignOut}>Log out</span>
                 <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
-            </DropdownMenuItem>
+            </DropdownMenuItem>}
         </>
     )
 }

@@ -1,0 +1,36 @@
+import React from 'react';
+import { Card, CardHeader, CardContent, CardTitle } from '../../../components/components/ui/card'; // Adjusted import
+import { Button } from '../../../components/components/ui/button';
+
+import catImage from '../../../assets/Categories/cat.jpg';
+import dogImage from '../../../assets/Categories/dog.jpg';
+import rabbitImage from '../../../assets/Categories/rabbit.jpg';
+import birdImage from '../../../assets/Categories/FavIcon.png';
+
+const petCategories = [
+  { name: 'Cats', imageUrl: catImage },
+  { name: 'Dogs', imageUrl: dogImage },
+  { name: 'Rabbits', imageUrl: rabbitImage },
+  { name: 'Birds', imageUrl: birdImage }, 
+];
+
+
+const PetsCategory = () => {
+  return (
+    <div className="grid md:grid-cols-2 gap-4">
+      {petCategories.map((category) => (
+        <Card key={category.name} className="shadow-lg">
+          <CardHeader className="h-96">
+            <img src={category.imageUrl} alt={category.name} className="w-full h-full object-cover" />
+          </CardHeader>
+          <CardContent className="flex flex-col items-center">
+            <CardTitle className="text-xl font-bold">{category.name}</CardTitle>
+            <Button className="mt-2">Explore {category.name}</Button>
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  );
+};
+
+export default PetsCategory;

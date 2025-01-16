@@ -7,6 +7,7 @@ import ThemeProvider from './Providers/ThemeProvider.jsx'
 import AuthProvider from './Providers/AuthProvider/AuthProvider'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import toast, { Toaster } from 'react-hot-toast';
+import FacebookLogin from './Pages/AuthRelated/SocialLogin/FacebookLogin'
 
 const notify = () => toast('Here is your toast.');
 
@@ -19,6 +20,7 @@ createRoot(document.getElementById('root')).render(
         <ThemeProvider>
           <div className='max-w-screen-xl mx-auto'>
             <RouterProvider router={router} />
+            <FacebookLogin/>
             <Toaster />
           </div>
         </ThemeProvider>

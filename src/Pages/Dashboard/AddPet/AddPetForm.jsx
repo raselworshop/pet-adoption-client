@@ -27,7 +27,8 @@ const AddPetForm = () => {
     { value: 'dog', label: 'Dog' },
     { value: 'cat', label: 'Cat' },
     { value: 'bird', label: 'Bird' },
-    { value: 'other', label: 'Other' }
+    { value: 'rabbit', label: 'Rabbit' },
+    { value: 'Fish', label: 'Fish' }
   ];
 
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {

@@ -8,39 +8,59 @@ import { DropdownMenuSeparator } from '@radix-ui/react-dropdown-menu';
 import useAuth from '../../../Hooks/useAuth';
 
 const SocialLogin = () => {
-    const { setUser } = useAuth()
+    const { setUser } = useAuth();
+
     const handleLogin = async (provider) => {
         try {
             const result = await signInWithPopup(auth, provider);
             console.log('User Info:', result.user);
-            setUser(result.user)
-            // Handle successful login (e.g., store user info, redirect, etc.)
+            setUser(result.user);
         } catch (error) {
             console.error('Login Error:', error);
-            // Handle login error (e.g., show error message)
         }
+    };
+
+    const handleFacebookLogin = () => {
+        FB.login(function(response) {
+            if (response.authResponse) {
+                const { accessToken, userID } = response.authResponse;
+                FB.api('/me', { fields: 'name,email' }, function(userInfo) {
+                    setUser({
+                        uid: userID,
+                        displayName: userInfo.name,
+                        email: userInfo.email,
+                        accessToken: accessToken,
+                        photoURL: userInfo.picture.data?.url
+                    });
+                    console.log('User Info:', userInfo);
+                    console.log('User Info:', userInfo.displayName);
+                });
+            } else {
+                console.error('User cancelled login or did not fully authorize.');
+            }
+        }, { scope: 'public_profile,email' });
     };
 
     return (
         <div className='flex flex-col gap-2 my-5'>
-            <Button>
-            <IoLogoGoogle />
-                <span onClick={() => handleLogin(new GoogleAuthProvider())}>Login with Google</span>
+            <Button onClick={() => handleLogin(new GoogleAuthProvider())}>
+                <IoLogoGoogle />
+                <span>Login with Google</span>
             </Button>
-            <DropdownMenuSeparator/>
-            <Button>
-                <Facebook/>
-                <span onClick={() => handleLogin(new FacebookAuthProvider())}>Login with Facebook</span>
+            <DropdownMenuSeparator />
+            <Button onClick={handleFacebookLogin}>
+                <Facebook />
+                <span>Login with Facebook</span>
             </Button>
-            <DropdownMenuSeparator/>
-            <Button>
-                <GithubIcon/>
-                <span onClick={() => handleLogin(new GithubAuthProvider())}>Login with GitHub</span>
+            <DropdownMenuSeparator />
+            <Button onClick={() => handleLogin(new GithubAuthProvider())}>
+                <GithubIcon />
+                <span>Login with GitHub</span>
             </Button>
-            <DropdownMenuSeparator/>
-            <Button>
-                <Twitter/>
-                <span onClick={() => handleLogin(new TwitterAuthProvider())}>Login with Twitter</span>
+            <DropdownMenuSeparator />
+            <Button onClick={() => handleLogin(new TwitterAuthProvider())}>
+                <Twitter />
+                <span>Login with Twitter</span>
             </Button>
         </div>
     );
