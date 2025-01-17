@@ -3,11 +3,13 @@ import useAxiosPublic from '../../Hooks/useAxiosPublic';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useInView } from 'react-intersection-observer';
 import ButtonLoading from '../../components/components/ui/ButtonLoading';
+import { useNavigate } from 'react-router-dom';
 
 const PetListing = () => {
     const [search, setSearch] = useState('')
     const [category, setCategory] = useState('')
     const axiosPublic = useAxiosPublic()
+    const navigate = useNavigate()
 
     const fetchPets = async ({ pageParam = 1, queryKey }) => {
         const [_key, { search, category }] = queryKey;
@@ -18,6 +20,7 @@ const PetListing = () => {
     }
     const {
         data,
+        refetch,
         fetchNextPage,
         hasNextPage,
         isFetchingNextPage
@@ -40,6 +43,16 @@ const PetListing = () => {
             fetchNextPage()
         }
     }, [inView, hasNextPage, fetchNextPage])
+
+    useEffect(()=>{
+        refetch()
+    }, [search, category, refetch])
+
+    const navigateToDetails=(id)=>{
+        console.log(id)
+        navigate(`/petDetails/${id}`)
+    }
+
     return (
         <div className="container mx-auto py-4">
             <div className="flex justify-between mb-4">
@@ -69,7 +82,9 @@ const PetListing = () => {
                             <h2 className="text-xl font-bold text-white">{pet.petName}</h2>
                             <p className="text-white">Age: {pet.petAge}</p>
                             <p className="text-white">Location: {pet.petLocation}</p>
-                            <button className="bg-blue-500 text-white rounded p-2 mt-4">
+                            <button 
+                            onClick={()=>navigateToDetails(pet._id)}
+                            className="bg-blue-500 text-white rounded p-2 mt-4">
                                 View Details
                             </button>
                         </div>

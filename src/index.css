@@ -65,3 +65,12 @@
   }
 }
 
+.react-tel-input {
+  width: 100% !important; 
+}
+
+.react-tel-input .form-control {
+  width: 100% !important; 
+  box-sizing: border-box; 
+}
+
