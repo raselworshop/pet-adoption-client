@@ -8,10 +8,10 @@ import rabbitImage from '../../../assets/Categories/rabbit.jpg';
 import birdImage from '../../../assets/Categories/FavIcon.png';
 
 const petCategories = [
-  { name: 'Cats', imageUrl: catImage },
-  { name: 'Dogs', imageUrl: dogImage },
-  { name: 'Rabbits', imageUrl: rabbitImage },
-  { name: 'Birds', imageUrl: birdImage }, 
+  { name: 'Cat', imageUrl: catImage },
+  { name: 'Dog', imageUrl: dogImage },
+  { name: 'Rabbit', imageUrl: rabbitImage },
+  { name: 'Bird', imageUrl: birdImage }, 
 ];
 
 
@@ -24,8 +24,8 @@ const PetsCategory = () => {
             <img src={category.imageUrl} alt={category.name} className="w-full h-full object-cover" />
           </CardHeader>
           <CardContent className="flex flex-col items-center">
-            <CardTitle className="text-xl font-bold">{category.name}</CardTitle>
-            <Button className="mt-2">Explore {category.name}</Button>
+            <CardTitle className="text-xl font-bold">{category.name}s</CardTitle>
+            <Button className="mt-2">Explore {category.name}s</Button>
           </CardContent>
         </Card>
       ))}
