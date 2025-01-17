@@ -6,12 +6,17 @@ import 'react-quill/dist/quill.snow.css';
 import useCloudinary from '../../../Hooks/useCloudinary';
 import { Button } from '@/components/components/ui/button';
 import ButtonLoading from '@/components/components/ui/ButtonLoading';
+import useAxiosPrivate from '../../../Hooks/useAxiosPrivate';
+import toast from 'react-hot-toast';
+import useAuth from '../../../Hooks/useAuth';
 
 const AddPetForm = () => {
+  const { user } = useAuth()
   const [longDescription, setLongDescription] = useState('');
   const [petImage, setPetImage] = useState(null);
   const [petImageUrl, setPetImageUrl] = useState('');
   const { uploadImage, uploading, error } = useCloudinary();
+  const axiosPrivate = useAxiosPrivate()
   console.log('pet staste', petImageUrl)
   const initialValues = {
     petImage: null,
@@ -21,6 +26,8 @@ const AddPetForm = () => {
     petLocation: '',
     shortDescription: '',
     longDescription: '',
+    ownerName : user?.displayName,
+    ownerMail: user?.email
   };
 
   const petCategories = [
@@ -49,8 +56,11 @@ const AddPetForm = () => {
       };
 
       console.table(petData)
-      // await axios.post('/api/pets', petData);
-      alert('Pet added successfully!');
+      const res = await axiosPrivate.post('/pets', petData);
+      if(res.status === 200){
+        toast.success("Pet added successfully!")
+      }
+      // alert('Pet added successfully!');
     } catch (error) {
       setErrors({ submit: 'Failed to add pet. Please try again.' });
     } finally {
