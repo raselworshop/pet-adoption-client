@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { auth } from '../../../Firebase/firebase.config';
 import useAuth from '../../../Hooks/useAuth';
 
 const FacebookLogin = () => {

@@ -20,6 +20,7 @@ import {
 import { Link } from "react-router-dom";
 import useAuth from "../../Hooks/useAuth";
 import toast from "react-hot-toast";
+import Badge from "../Shared/Badge";
 
 export function ProfileDropdownMenu() {
     const { user, signOutUser } = useAuth()
@@ -38,7 +39,7 @@ export function ProfileDropdownMenu() {
                 <DropdownMenuItem>
                     <User />
                     <span>Profile</span>
-                    <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+                    <DropdownMenuShortcut>{user?.email}</DropdownMenuShortcut>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                     <CreditCard />
@@ -48,7 +49,7 @@ export function ProfileDropdownMenu() {
                 <DropdownMenuItem>
                     <LayoutDashboard />
                     <Link to={'/dashboard'}>
-                        Dashboard
+                        Dashboard (<Badge />)
                     </Link>
                     <DropdownMenuShortcut>⌘D</DropdownMenuShortcut>
                 </DropdownMenuItem>

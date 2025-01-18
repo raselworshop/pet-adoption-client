@@ -7,11 +7,12 @@ import signupLottie from '../../../assets/lottie/signup.json';
 import { Button } from '@/components/components/ui/button';
 import SocialLogin from '../SocialLogin/SocialLogin';
 import { DropdownMenuSeparator } from '@/components/components/ui/dropdown-menu';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import ButtonLoading from '@/components/components/ui/ButtonLoading';
 import useAuth from '../../../Hooks/useAuth';
 import useAxiosPublic from '../../../Hooks/useAxiosPublic';
 import toast from 'react-hot-toast';
+import { Helmet } from 'react-helmet';
 
 const Register = () => {
     const { createUser, updateUserProfile } = useAuth();
@@ -20,6 +21,7 @@ const Register = () => {
     const [profileImageUrl, setProfileImageUrl] = useState('');
     const { uploadUserImage, error } = useImageUpload();
     const axiosPublic = useAxiosPublic()
+    const navigate = useNavigate()
 
     const initialValues = {
         fullname: '',
@@ -91,6 +93,7 @@ const Register = () => {
                         const res = await axiosPublic.post('/users', userinfo);
                         if (res.data.insertedId) {
                             toast.success(`successfully created user is ${values.fullname}`)
+                            navigate('/')
                         }
                         console.log('Response:', res.data);
                         console.log('Axios Base URL:', axiosPublic.defaults.baseURL);
@@ -111,6 +114,7 @@ const Register = () => {
 
         } catch (error) {
             console.error('User creation error:', error);
+            toast.error(error.message)
         } finally {
             setSubmitting(false);
         }
@@ -132,7 +136,9 @@ const Register = () => {
     };
 
     return (
-        <div className="container mx-auto flex flex-col md:flex-row items-center justify-center min-h-screen">
+        <div>
+            <Helmet><title>PA || REGISTER</title></Helmet>
+            <div className="container mx-auto flex flex-col md:flex-row items-center justify-center min-h-screen">
             <div className='flex-1 p-5 dark:bg-gray-800 bg-gray-300'>
                 <h2 className='text-3xl font-semibold my-3 mb-5'>You're Most Welcome to Pet Adoption</h2>
                 <DropdownMenuSeparator />
@@ -225,6 +231,7 @@ const Register = () => {
                         </div>)}
                 </div>
             </div>
+        </div>
         </div>
     );
 };

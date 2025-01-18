@@ -9,6 +9,7 @@ import { MenuIcon, XIcon } from 'lucide-react';
 import MobileMenu from '../Navbar/MobileMenu';
 import useAuth from '../../Hooks/useAuth';
 import logo from '../../assets/pet-adoption.webp'
+import Badge from '../Shared/Badge';
 
 const Navbar = () => {
     const { user } = useAuth()
@@ -46,7 +47,7 @@ const Navbar = () => {
             <nav className="py-4 md:px-5 lg:px-10 flex justify-between items-center">
                 <div className="flex items-center">
                     <div className='w-10 h-10'>
-                    <img src={logo} alt="" />
+                        <img src={logo} alt="" />
                     </div>
                     <NavLink to="/" className="text-xl font-bold">
                         Pet Adoption
@@ -112,9 +113,10 @@ const Navbar = () => {
                                     </NavLink>
                                 </NavigationMenuItem>
                             </>}
-                            <DropdownMenu>
+                            <DropdownMenu className=" relative">
                                 <DropdownMenuTrigger asChild>
                                     <div onClick={handleAvatarClick} className="dropdown">
+                                        <div className=" absolute md:-top-1 lg:right-[90px]"> <Badge /></div>
                                         <Avatar>
                                             <AvatarImage src={user?.photoURL} />
                                             <AvatarFallback>CN</AvatarFallback>

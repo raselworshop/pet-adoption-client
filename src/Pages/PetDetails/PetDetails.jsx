@@ -9,6 +9,8 @@ import { Separator } from '@/components/components/ui/separator';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 import toast from 'react-hot-toast';
+import { Helmet } from 'react-helmet';
+import useAdoptedPet from '../../Hooks/useAdoptedPet';
 
 
 const PetDetails = () => {
@@ -16,6 +18,7 @@ const PetDetails = () => {
     const { id } = useParams();
     const [pet, setPet] = useState(null)
     const privateAxios = useAxiosPrivate()
+    const {refetch} = useAdoptedPet()
 
     useEffect(() => {
         const fetchPet = async () => {
@@ -42,21 +45,33 @@ const PetDetails = () => {
         }
         console.table(adoptionData)
         try {
-            const response = await privateAxios.post('/adopted', adoptionData)
-            console.log(response.data)
+            if (!user) {
+                toast.error('Please Login to adopt')
+            } else {
+                const response = await privateAxios.post('/adopted', adoptionData)
+                console.log(response.data)
+                if (response.data.insertedId) {
+                    toast.success(`Congratulations! Successfully adopted`)
+                    refetch()
+                }
+            }
         } catch (error) {
             console.log("Taking adoption error", error)
+            toast.error(error.message)
         }
     }
+
     const handleLogin = () => {
         toast.error("You are not logged in, please login");
     }
+
     if (!pet) {
         return <div>Loading pet details...</div>;
     }
 
     return (
         <div className="container mx-auto p-4">
+            <Helmet><title>PA || PET DETAILS</title></Helmet>
             <div className="border rounded p-4 text-center">
                 <div className='w-full flex flex-col md:flex-row items-center justify-center gap-3'>
                     <div className='flex-1  md:border-r-2 md:pr-4'>

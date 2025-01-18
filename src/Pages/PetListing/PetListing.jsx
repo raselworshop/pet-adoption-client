@@ -4,6 +4,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { useInView } from 'react-intersection-observer';
 import ButtonLoading from '../../components/components/ui/ButtonLoading';
 import { useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 
 const PetListing = () => {
     const [search, setSearch] = useState('')
@@ -55,6 +56,7 @@ const PetListing = () => {
 
     return (
         <div className="container mx-auto py-4">
+            <Helmet><title>PA || PET LISTING</title></Helmet>
             <div className="flex justify-between mb-4">
                 <input type="text" placeholder="Search by name..."
                     className="border rounded p-2 dark:bg-gray-700 dark:text-gray-400"

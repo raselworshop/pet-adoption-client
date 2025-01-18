@@ -21,6 +21,7 @@ import {
 import { Link } from "react-router-dom";
 import useAuth from "../../Hooks/useAuth";
 import toast from "react-hot-toast";
+import Badge from "../Shared/Badge";
 
 export function MobileMenu() {
     const { user, signOutUser } = useAuth()
@@ -54,7 +55,7 @@ export function MobileMenu() {
                 <DropdownMenuItem>
                     <LayoutDashboard />
                     <Link to={'/dashboard'}>
-                        Dashboard
+                        Dashboard (<Badge />)
                     </Link>
                     <DropdownMenuShortcut>⌘D</DropdownMenuShortcut>
                 </DropdownMenuItem>
