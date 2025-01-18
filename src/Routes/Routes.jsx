@@ -10,6 +10,8 @@ import AddPetForm from "../Pages/Dashboard/AddPet/AddPetForm";
 import ResetPassword from "../Pages/AuthRelated/PasswordReset/PasswordReset";
 import PetDetails from "../Pages/PetDetails/PetDetails";
 import DonationDetailsPage from "../Pages/DonationCampaign/Details/DonationDetailsPage";
+import MyPets from "../Pages/Dashboard/MyPets/MyPets";
+import UpdateMyPet from "../Pages/Dashboard/MyPets/UpdateMyPet";
 
 const router = createBrowserRouter([
     {
@@ -50,6 +52,14 @@ const router = createBrowserRouter([
             {
                 path: 'addPet',
                 element: <AddPetForm/>
+            },
+            {
+                path: 'myPets',
+                element: <MyPets/>
+            },
+            {
+                path: 'update-pet/:id',
+                element: <UpdateMyPet/>
             }
         ]
     },

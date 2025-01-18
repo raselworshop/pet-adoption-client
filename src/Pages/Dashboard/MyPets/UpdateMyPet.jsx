@@ -11,25 +11,29 @@ import toast from 'react-hot-toast';
 import useAuth from '../../../Hooks/useAuth';
 import { Helmet } from 'react-helmet';
 import * as Yup from 'yup';
+import usePetUpdate from '../../../Hooks/usePetUpdate';
+import { useParams } from 'react-router-dom';
 
-const AddPetForm = () => {
+const UpdateMyPet = () => {
   const { user } = useAuth()
   const [longDescription, setLongDescription] = useState('');
   const [petImage, setPetImage] = useState(null);
   const [petImageUrl, setPetImageUrl] = useState('');
-  const { uploadImage, uploading, error } = useCloudinary();
+  const { uploadImage, uploading } = useCloudinary();
   const axiosPrivate = useAxiosPrivate()
+  const { id } = useParams()
   console.log('pet staste', petImageUrl)
-  console.log('pet staste', import.meta.env.VITE_CLOUD_NAME)
+  const { updatePet, refetch, isLoading } = usePetUpdate()
+  console.log(updatePet)
 
   const initialValues = {
-    petImage: null,
-    petName: '',
-    petAge: '',
-    petCategory: '',
-    petLocation: '',
-    shortDescription: '',
-    longDescription: '',
+    petImage: updatePet.petImage || null,
+    petName: updatePet.petName || '',
+    petAge: updatePet.petAge || '',
+    petCategory: updatePet.petCategory || '',
+    petLocation: updatePet.petLocation || '',
+    shortDescription: updatePet.shortDescription || '',
+    longDescription: updatePet.longDescription || '',
     ownerName: user?.displayName,
     ownerMail: user?.email
   };
@@ -72,9 +76,9 @@ const AddPetForm = () => {
 
       console.table(petData)
       if (user && user.email) {
-        const res = await axiosPrivate.post('/pets', petData);
+        const res = await axiosPrivate.put(`/my-pets/${id}`, petData);
         if (res.status === 200) {
-          toast.success("Pet added successfully!")
+          toast.success("Pet updated successfully!")
         }
       } else {
         return toast.error('Please login first')
@@ -103,11 +107,11 @@ const AddPetForm = () => {
 
   return (
     <div>
-      <Helmet><title>PA || PET ADD</title></Helmet>
+      <Helmet><title>PA || PET UPDATE</title></Helmet>
       <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
         {({ setFieldValue, isSubmitting }) => (
           <div>
-            <h2 className='text-3xl font-semibold mb-6'>Add a Pet</h2>
+            <h2 className='text-3xl font-semibold mb-6'>Update a Pet</h2>
             <Form>
               <div>
                 <label htmlFor="petImage">Pet Image</label>
@@ -194,4 +198,4 @@ const AddPetForm = () => {
   );
 };
 
-export default AddPetForm;
+export default UpdateMyPet;

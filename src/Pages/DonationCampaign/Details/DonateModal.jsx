@@ -153,12 +153,12 @@ const DonateForm = ({ onClose, campaignId }) => {
                     </Button>}
                 </form>
 
-                {loading && <Button
+                <Button
                     className="text-red-500 mt-4"
                     onClick={onClose}
                 >
                     Close
-                </Button>}
+                </Button>
             </div>
         </div>
     );

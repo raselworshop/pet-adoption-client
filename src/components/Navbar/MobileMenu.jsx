@@ -54,7 +54,7 @@ export function MobileMenu() {
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                     <LayoutDashboard />
-                    <Link to={'/dashboard'}>
+                    <Link to={'/dashboard/addPet'}>
                         Dashboard (<Badge />)
                     </Link>
                     <DropdownMenuShortcut>⌘D</DropdownMenuShortcut>
