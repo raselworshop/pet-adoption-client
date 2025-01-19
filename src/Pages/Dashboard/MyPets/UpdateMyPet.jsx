@@ -3,7 +3,6 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import Select from 'react-select';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import useCloudinary from '../../../Hooks/useCloudinary';
 import { Button } from '@/components/components/ui/button';
 import ButtonLoading from '@/components/components/ui/ButtonLoading';
 import useAxiosPrivate from '../../../Hooks/useAxiosPrivate';
@@ -11,29 +10,39 @@ import toast from 'react-hot-toast';
 import useAuth from '../../../Hooks/useAuth';
 import { Helmet } from 'react-helmet';
 import * as Yup from 'yup';
+import useCloudinary from '../../../Hooks/useCloudinary';
 import usePetUpdate from '../../../Hooks/usePetUpdate';
 import { useParams } from 'react-router-dom';
+
+const stripHtmlTags = (str) => {
+  if (!str) return '';
+  return str.replace(/<\/?[^>]+(>|$)/g, "");
+};
+
 
 const UpdateMyPet = () => {
   const { user } = useAuth()
   const [longDescription, setLongDescription] = useState('');
-  const [petImage, setPetImage] = useState(null);
-  const [petImageUrl, setPetImageUrl] = useState('');
-  const { uploadImage, uploading } = useCloudinary();
+  const { uploadImage, uploading, error } = useCloudinary();
   const axiosPrivate = useAxiosPrivate()
   const { id } = useParams()
-  console.log('pet staste', petImageUrl)
-  const { updatePet, refetch, isLoading } = usePetUpdate()
-  console.log(updatePet)
-
+  const { updatePet, refetch, isLoading, isFetching } = usePetUpdate()
+  console.log(
+    'pet staste',
+    user?.displayName,
+    user?.email,
+    updatePet
+  )
+  if(isFetching) return <div>Data Fetching..</div>
+ if(isLoading) return <ButtonLoading/>
   const initialValues = {
-    petImage: updatePet.petImage || null,
-    petName: updatePet.petName || '',
-    petAge: updatePet.petAge || '',
-    petCategory: updatePet.petCategory || '',
-    petLocation: updatePet.petLocation || '',
-    shortDescription: updatePet.shortDescription || '',
-    longDescription: updatePet.longDescription || '',
+    petImage: updatePet?.petImage || null,
+    petName: updatePet?.petName || '',
+    petAge: updatePet?.petAge || '',
+    petCategory: updatePet?.petCategory || '',
+    petLocation: updatePet?.petLocation || '',
+    shortDescription: updatePet?.shortDescription || '',
+    longDescription: stripHtmlTags(updatePet.longDescription) || '',
     ownerName: user?.displayName,
     ownerMail: user?.email
   };
@@ -56,62 +65,83 @@ const UpdateMyPet = () => {
     { value: 'rabbit', label: 'Rabbit' },
     { value: 'Fish', label: 'Fish' }
   ];
+  const handleImageUpload = async (e, setFieldValue) => {
+    const file = e.target.files[0];
+    if (!file) {
+      toast.error('No file selected.');
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) { // 5MB limit
+      toast.error('File size exceeds 5MB.');
+      return;
+    }
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+    if (!allowedTypes.includes(file.type)) {
+      toast.error('Unsupported file format. Please upload JPEG, PNG, or GIF.');
+      return;
+    }
+    try {
+      const response = await uploadImage(file);
+      if (response.url) {
+        setFieldValue('petImage', response.url);
+        toast.success('Image uploaded successfully!');
+      } else {
+        toast.error('Image upload failed.');
+      }
+    } catch (error) {
+      toast.error('Error uploading image.');
+    }
+  };
+
+  if (!user || !user.email || !user.displayName) {
+    return <div>Please log in to access this form.</div>;
+  }
 
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
+    console.log('image before upload', values.petImage)
     try {
-      let imageUrl = '';
-      if (petImage) {
-        imageUrl = await uploadImage(petImage);
-        console.log(imageUrl)
-        setPetImageUrl(imageUrl);
-      }
 
       const petData = {
         ...values,
-        petImage: imageUrl,
         longDescription: longDescription,
         dateAdded: new Date().toISOString(),
         isAdopted: false,
       };
 
       console.table(petData)
+      if (!petData) {
+        toast.error('Pet data is missing or invalid.');
+        return;
+      }
       if (user && user.email) {
         const res = await axiosPrivate.put(`/my-pets/${id}`, petData);
-        if (res.status === 200) {
-          toast.success("Pet updated successfully!")
+        console.log(res.data)
+        if (res.result.modifiedCount===0) {
+          refetch()
+          toast.success("Pet upadted successfully!")
         }
       } else {
         return toast.error('Please login first')
       }
-      // alert('Pet added successfully!');
     } catch (error) {
-      setErrors({ submit: 'Failed to add pet. Please try again.' });
+      console.log(error)
+      setErrors({ submit: 'Failed to update pet. Please try again.' });
     } finally {
       setSubmitting(false);
     }
   };
 
-  const handleImageUpload = (e) => {
-    const file = e.currentTarget.files[0];
-    setPetImage(file);
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPetImageUrl(reader.result);
-      };
-      reader.readAsDataURL(file);
-    } else {
-      setPetImageUrl('');
-    }
-  };
+  if (error) {
+    return <div>{error}</div>
+  }
 
   return (
     <div>
       <Helmet><title>PA || PET UPDATE</title></Helmet>
       <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
-        {({ setFieldValue, isSubmitting }) => (
+        {({ setFieldValue, isSubmitting, values }) => (
           <div>
-            <h2 className='text-3xl font-semibold mb-6'>Update a Pet</h2>
+            <h2 className='text-3xl font-semibold mb-6'>Upadte a Pet</h2>
             <Form>
               <div>
                 <label htmlFor="petImage">Pet Image</label>
@@ -120,7 +150,7 @@ const UpdateMyPet = () => {
                   type="file"
                   name="petImage"
                   accept="image/*"
-                  onChange={handleImageUpload}
+                  onChange={(e) => handleImageUpload(e, setFieldValue)}
                 />
                 <ErrorMessage className='text-red-500 text-sm' name="petImage" component="div" />
                 {uploading && <ButtonLoading />}
@@ -167,7 +197,7 @@ const UpdateMyPet = () => {
                 <label htmlFor="longDescription">Long Description</label>
                 <ReactQuill
                   className="m-2"
-                  value={longDescription}
+                  value={longDescription || initialValues.longDescription}
                   onChange={(value) => {
                     setLongDescription(value);
                     setFieldValue('longDescription', value);
@@ -180,10 +210,10 @@ const UpdateMyPet = () => {
                 Submit
               </Button>
               <ErrorMessage className='text-red-500 text-sm' name="submit" component="div" />
-              {petImageUrl && (
+              {values.petImage && (
                 <div className="flex">
                   <img
-                    src={petImageUrl}
+                    src={values.petImage}
                     alt="Pet Preview"
                     style={{ width: '250px', height: '200px', marginTop: '10px' }}
                   />

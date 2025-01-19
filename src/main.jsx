@@ -1,6 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
+import Modal from 'react-modal';
 import { RouterProvider } from 'react-router-dom'
 import router from './Routes/Routes.jsx'
 import ThemeProvider from './Providers/ThemeProvider.jsx'
@@ -12,6 +13,8 @@ import FacebookLogin from './Pages/AuthRelated/SocialLogin/FacebookLogin'
 const notify = () => toast('Here is your toast.');
 
 const queryClient = new QueryClient();
+
+Modal.setAppElement('#root');
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

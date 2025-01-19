@@ -3,7 +3,6 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import Select from 'react-select';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import useCloudinary from '../../../Hooks/useCloudinary';
 import { Button } from '@/components/components/ui/button';
 import ButtonLoading from '@/components/components/ui/ButtonLoading';
 import useAxiosPrivate from '../../../Hooks/useAxiosPrivate';
@@ -11,16 +10,17 @@ import toast from 'react-hot-toast';
 import useAuth from '../../../Hooks/useAuth';
 import { Helmet } from 'react-helmet';
 import * as Yup from 'yup';
+import useCloudinary from '../../../Hooks/useCloudinary';
+import { useNavigate } from 'react-router-dom';
 
 const AddPetForm = () => {
   const { user } = useAuth()
   const [longDescription, setLongDescription] = useState('');
-  const [petImage, setPetImage] = useState(null);
-  const [petImageUrl, setPetImageUrl] = useState('');
   const { uploadImage, uploading, error } = useCloudinary();
   const axiosPrivate = useAxiosPrivate()
-  console.log('pet staste', petImageUrl)
-  console.log('pet staste', import.meta.env.VITE_CLOUD_NAME)
+  const navigate = useNavigate()
+  console.log('pet staste', user?.displayName,
+     user?.email)
 
   const initialValues = {
     petImage: null,
@@ -52,19 +52,44 @@ const AddPetForm = () => {
     { value: 'rabbit', label: 'Rabbit' },
     { value: 'Fish', label: 'Fish' }
   ];
+  const handleImageUpload = async (e, setFieldValue) => {
+    const file = e.target.files[0];
+    if (!file) {
+      toast.error('No file selected.');
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) { // 5MB limit
+      toast.error('File size exceeds 5MB.');
+      return;
+    }
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+    if (!allowedTypes.includes(file.type)) {
+      toast.error('Unsupported file format. Please upload JPEG, PNG, or GIF.');
+      return;
+    }
+    try {
+      const response = await uploadImage(file);
+      if (response.url) {
+        setFieldValue('petImage', response.url);
+        toast.success('Image uploaded successfully!');
+      } else {
+        toast.error('Image upload failed.');
+      }
+    } catch (error) {
+      toast.error('Error uploading image.');
+    }
+  };
+
+  if (!user || !user.email || !user.displayName) {
+    return <div>Please log in to access this form.</div>;
+  }
 
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
+    console.log('image before upload', values.petImage) 
     try {
-      let imageUrl = '';
-      if (petImage) {
-        imageUrl = await uploadImage(petImage);
-        console.log(imageUrl)
-        setPetImageUrl(imageUrl);
-      }
 
       const petData = {
         ...values,
-        petImage: imageUrl,
         longDescription: longDescription,
         dateAdded: new Date().toISOString(),
         isAdopted: false,
@@ -75,6 +100,7 @@ const AddPetForm = () => {
         const res = await axiosPrivate.post('/pets', petData);
         if (res.status === 200) {
           toast.success("Pet added successfully!")
+          navigate('/dashboard/myPets')
         }
       } else {
         return toast.error('Please login first')
@@ -87,25 +113,16 @@ const AddPetForm = () => {
     }
   };
 
-  const handleImageUpload = (e) => {
-    const file = e.currentTarget.files[0];
-    setPetImage(file);
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPetImageUrl(reader.result);
-      };
-      reader.readAsDataURL(file);
-    } else {
-      setPetImageUrl('');
-    }
-  };
+
+  if (error) {
+    return <div>{error}</div>
+  }
 
   return (
     <div>
       <Helmet><title>PA || PET ADD</title></Helmet>
       <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
-        {({ setFieldValue, isSubmitting }) => (
+        {({ setFieldValue, isSubmitting, values  }) => (
           <div>
             <h2 className='text-3xl font-semibold mb-6'>Add a Pet</h2>
             <Form>
@@ -116,7 +133,7 @@ const AddPetForm = () => {
                   type="file"
                   name="petImage"
                   accept="image/*"
-                  onChange={handleImageUpload}
+                  onChange={(e) => handleImageUpload(e, setFieldValue)}
                 />
                 <ErrorMessage className='text-red-500 text-sm' name="petImage" component="div" />
                 {uploading && <ButtonLoading />}
@@ -176,10 +193,10 @@ const AddPetForm = () => {
                 Submit
               </Button>
               <ErrorMessage className='text-red-500 text-sm' name="submit" component="div" />
-              {petImageUrl && (
+              {values.petImage && (
                 <div className="flex">
                   <img
-                    src={petImageUrl}
+                    src={values.petImage}
                     alt="Pet Preview"
                     style={{ width: '250px', height: '200px', marginTop: '10px' }}
                   />

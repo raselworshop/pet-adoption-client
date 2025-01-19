@@ -3,6 +3,9 @@ import { useReactTable, getCoreRowModel, getSortedRowModel, getPaginationRowMode
 import Modal from 'react-modal';
 import useAuth from '../../../Hooks/useAuth';
 import useAxiosPrivate from '../../../Hooks/useAxiosPrivate';
+import { useNavigate } from 'react-router-dom';
+import { Button } from '@/components/components/ui/button';
+import toast from 'react-hot-toast';
 
 const MyPets = () => {
     const { user } = useAuth()
@@ -10,12 +13,17 @@ const MyPets = () => {
     const [pets, setPets] = useState([]);
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [petToDelete, setPetToDelete] = useState(null);
+    const navigate = useNavigate()
 
     useEffect(() => {
         const fetchPets = async () => {
             const response = await axiosPrivate.get(`/my-pets/${user?.email}`);
-            console.log(response.data)
-            setPets(response.data)
+            console.log('Fetched Pets:', response.data);
+            const petSerialNo = response.data.map((pet, idx) => ({
+                ...pet,
+                serialNumber: idx + 1
+            }))
+            setPets(petSerialNo)
         };
 
         fetchPets();
@@ -49,9 +57,11 @@ const MyPets = () => {
                 header: 'Actions',
                 cell: ({ row }) => (
                     <>
-                        <button onClick={() => handleUpdate(row.original._id)}>Update</button>
-                        <button onClick={() => openModal(row.original)}>Delete</button>
-                        <button onClick={() => handleAdopt(row.original._id)}>Adopt</button>
+                        <div className='flex flex-col gap-2'>
+                            <Button className="p-0 text-yellow-300 bg-orange-600" onClick={() => handleUpdate(row.original._id)}>Update</Button>
+                            <Button className="p-0 text-red-300 bg-red-600" onClick={() => openModal(row.original)}>Delete</Button>
+                            <Button className="p-0 text-green-300 bg-green-600" onClick={() => handleAdopt(row.original._id)}>Adopt</Button>
+                        </div>
                     </>
                 ),
             },
@@ -70,7 +80,12 @@ const MyPets = () => {
 
     const handleUpdate = (id) => {
         // Redirect to the update page
-        window.location.href = `/dashboard/update-pet/${id}`;
+        if (!id) {
+            console.error('No ID found for this pet.');
+            return;
+        }
+        console.log('ID found for this pet.', id);
+        navigate(`/dashboard/update-pet/${id}`);
     };
 
     const openModal = (pet) => {
@@ -84,20 +99,32 @@ const MyPets = () => {
     };
 
     const handleDelete = async () => {
-        await axiosPrivate.delete(`/api/delete-pet/${petToDelete._id}`);
+        const {data} = await axiosPrivate.delete(`/my-pets/${petToDelete._id}`);
+        console.log(data, petToDelete._id)
         setPets(pets.filter(pet => pet._id !== petToDelete._id));
         closeModal();
+        if(data.status === 200 || data.data.deletedCount>0){
+            toast.success("pet deleted successfull")
+        }else{
+            toast.error(data.message || "Something is wrong")
+        }
     };
 
     const handleAdopt = async (id) => {
-        await axiosPrivate.patch(`/api/adopt-pet/${id}`, { isAdopted: true });
+        const {data} = await axiosPrivate.patch(`/my-pets/status/${id}`, { isAdopted: true });
+        console.log(data)
         setPets(pets.map(pet => (pet._id === id ? { ...pet, isAdopted: true } : pet)));
+        if(data.modifiedCount>0){
+            toast.success("Pet adoption status updated successfull")
+        }else{
+            toast.error("Pet status updateing failed")
+        }
     };
 
     return (
         <div className="container mx-auto p-4">
             <h1 className="text-2xl font-bold mb-4">My Pets</h1>
-            <table className="min-w-full bg-white">
+            <table className="min-w-full">
                 <thead>
                     {table.getHeaderGroups().map(headerGroup => (
                         <tr key={headerGroup.id}>
@@ -108,7 +135,7 @@ const MyPets = () => {
                                     onClick={header.column.getToggleSortingHandler()}
                                 >
                                     {flexRender(header.column.columnDef.header, header.getContext())}
-                                    {header.column.getIsSorted() ? (header.column.getIsSortedDesc() ? ' 🔽' : ' 🔼') : ''}
+                                    {header.column.getIsSorted() ? (header.column.getIsSorted() ? ' 🔽' : ' 🔼') : ''}
                                 </th>
                             ))}
                         </tr>
@@ -141,10 +168,12 @@ const MyPets = () => {
                 </button>
             </div>}
             <Modal isOpen={modalIsOpen} onRequestClose={closeModal}>
-                <h2>Are you sure you want to delete this pet?</h2>
-                <div className="flex justify-end space-x-4">
-                    <button onClick={handleDelete}>Yes</button>
-                    <button onClick={closeModal}>No</button>
+                <div className={'max-w-80 mx-auto flex flex-col items-center gap-5'}>
+                    <h2>Are you sure you want to delete this pet?</h2>
+                    <div className="flex space-x-4">
+                        <Button className="text-red-300 bg-red-600" onClick={handleDelete}>Yes</Button>
+                        <Button onClick={closeModal}>No</Button>
+                    </div>
                 </div>
             </Modal>
         </div>

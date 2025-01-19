@@ -18,7 +18,7 @@ const PetDetails = () => {
     const { id } = useParams();
     const [pet, setPet] = useState(null)
     const privateAxios = useAxiosPrivate()
-    const {refetch} = useAdoptedPet()
+    const { refetch } = useAdoptedPet()
 
     useEffect(() => {
         const fetchPet = async () => {
@@ -84,7 +84,8 @@ const PetDetails = () => {
                         <p>Location: {pet.petLocation}</p>
                         <p>Added Date: {pet.dateAdded}</p>
                         <p>Pet Age: {pet.petAge}</p>
-                        <p>About Pet: {pet.longDescription}</p>
+                        {/* <p>About Pet: {longDescription}</p> */}
+                        <div dangerouslySetInnerHTML={{ __html: pet.longDescription }}></div>
                     </div>
                 </div>
                 <Separator className="mb-4" />
