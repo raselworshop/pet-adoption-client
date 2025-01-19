@@ -6,6 +6,7 @@ import useAxiosPrivate from '../../../Hooks/useAxiosPrivate';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/components/ui/button';
 import toast from 'react-hot-toast';
+import { Helmet } from 'react-helmet';
 
 const MyPets = () => {
     const { user } = useAuth()
@@ -123,6 +124,7 @@ const MyPets = () => {
 
     return (
         <div className="container mx-auto p-4">
+            <Helmet><title>PA || MY PETS</title></Helmet>
             <h1 className="text-2xl font-bold mb-4">My Pets</h1>
             <table className="min-w-full">
                 <thead>
