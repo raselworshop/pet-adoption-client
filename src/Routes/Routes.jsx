@@ -14,6 +14,7 @@ import MyPets from "../Pages/Dashboard/MyPets/MyPets";
 import UpdateMyPet from "../Pages/Dashboard/MyPets/UpdateMyPet";
 import DonationCampForm from "../Pages/Dashboard/DonationCampign/DonationCampForm";
 import MyDonationCamp from "../Pages/Dashboard/DonationCampign/MyCampaign/MyDonationCamp";
+import EditDonationForm from "../Pages/Dashboard/DonationCampign/MyCampaign/EditDonation/EditDonationForm";
 
 const router = createBrowserRouter([
     {
@@ -70,6 +71,10 @@ const router = createBrowserRouter([
             {
                 path: 'myCampaignsReport',
                 element: <MyDonationCamp />
+            },
+            {
+                path: 'editDonation/:id',
+                element: <EditDonationForm/>
             }
         ]
     },

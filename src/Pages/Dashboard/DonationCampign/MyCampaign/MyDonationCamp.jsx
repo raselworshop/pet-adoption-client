@@ -5,6 +5,7 @@ import useAuth from '../../../../Hooks/useAuth';
 import useAxiosPrivate from '../../../../Hooks/useAxiosPrivate';
 import { useNavigate } from 'react-router-dom';
 import { flexRender, getCoreRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
+import toast from 'react-hot-toast';
 
 const MyDonationCamp = () => {
     const { user } = useAuth()
@@ -19,10 +20,10 @@ const MyDonationCamp = () => {
         const fetchCamp = async () => {
             setLoading(true)
             try {
-                const {data} = await axiosPrivate.get(`/my-donation-campaigns/${user?.email}`)
+                const { data } = await axiosPrivate.get(`/my-donation-campaigns/${user?.email}`)
                 console.log(data)
                 const campaignsData = data.map(campaign => ({
-                    ...campaign, 
+                    ...campaign,
                     isPaused: campaign.isPaused ?? false
                 }));
                 setCampaigns(campaignsData)
@@ -37,9 +38,12 @@ const MyDonationCamp = () => {
         try {
             const res = await axiosPrivate.patch(`/donation-campaign/pause/${campaignId}`, { isPaused })
             console.log(res.data)
-            setCampaigns(campaigns.map(campaign => 
+            setCampaigns(campaigns.map(campaign =>
                 campaign._id === campaignId ? { ...campaign, isPaused } : campaign
             ))
+            if(res.data.modifiedCount>0){
+                toast.success(`You have successfully updated to ${isPaused? 'Paused':'Unpaused'}`)
+            }
         } catch (error) {
             console.log("Error updating pause status", error)
         }
@@ -47,7 +51,7 @@ const MyDonationCamp = () => {
 
     const handleEdit = (id) => {
         console.log(id)
-        navigate(`/dashboadr/editDonation/${id}`)
+        navigate(`/dashboard/editDonation/${id}`)
     }
 
     const handleViewDonors = (donors) => {
@@ -76,12 +80,14 @@ const MyDonationCamp = () => {
                 const maxDonationAmount = row.original.maxDonation;
                 const donatedAmount = row.original.donatedAmount;
                 return (
-                    <div className="w-full bg-gray-500 rounded-full h-4">
-                        <div
-                            className='bg-green-600 h-4 rounded-full'
-                            style={{ maxWidth: `${( donatedAmount/maxDonationAmount ) * 100}%` }}
-                        ></div>
-                    </div>
+                        <div className="w-full bg-gray-500 rounded-full h-4">
+                            <div
+                                className='bg-green-600 h-4 rounded-full'
+                                style={{
+                                    width: donatedAmount > 0 ? `${Math.min((donatedAmount / maxDonationAmount) * 100, 100)}%` : '0%'
+                                }}
+                            ></div>
+                        </div>
                 )
             }
         },
@@ -91,7 +97,7 @@ const MyDonationCamp = () => {
                 <div className="flex space-x-2">
                     <button
                         className="mr-2 bg-blue-500 text-white px-2 py-1 rounded"
-                        onClick={() => handlePause(row.original._id,  !row.original.isPaused)}
+                        onClick={() => handlePause(row.original._id, !row.original.isPaused)}
                     >
                         {row.original.isPaused ? 'Unpause' : 'Pause'}
                     </button>
@@ -174,12 +180,12 @@ const MyDonationCamp = () => {
                 className={'dark:bg-gray-900 bg-white p-12'}
             >
                 <div className='flex justify-between'>
-                <h2 className='text-2xl my-2'>Donors</h2>
-                <button
-                    className="my-2 bg-red-500 hover:bg-red-700 text-white px-4 py-2 rounded"
-                    onClick={closeModal}>
-                    Close
-                </button>
+                    <h2 className='text-2xl my-2'>Donors</h2>
+                    <button
+                        className="my-2 bg-red-500 hover:bg-red-700 text-white px-4 py-2 rounded"
+                        onClick={closeModal}>
+                        Close
+                    </button>
                 </div>
                 <table className="min-w-full">
                     <thead>
@@ -192,7 +198,8 @@ const MyDonationCamp = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {donors.map((donor, index) => (
+                        {donors? <>
+                            {donors?.map((donor, index) => (
                             <tr key={index}>
                                 <td className="px-4 py-2 border">{donor.name}</td>
                                 <td className="px-4 py-2 border">{donor.email}</td>
@@ -201,9 +208,14 @@ const MyDonationCamp = () => {
                                 <td className="px-4 py-2 border">{new Date(donor.date).toLocaleString()}</td>
                             </tr>
                         ))}
+                        </>: <>
+                        <div className='flex items-center justify-center'>
+                            <h2 className="text-2xl text-center">You don't have any donor for this campaign!</h2>
+                        </div>
+                        </>}
                     </tbody>
                 </table>
-                
+
             </Modal>
         </div>
     );

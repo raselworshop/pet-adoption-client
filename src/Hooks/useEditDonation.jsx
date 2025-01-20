@@ -2,16 +2,16 @@ import { useQuery } from '@tanstack/react-query';
 import useAxiosPrivate from './useAxiosPrivate';
 import { useParams } from 'react-router-dom';
 
-const usePetUpdate = () => {
+const useEditDonation = () => {
     const axiosPrivate = useAxiosPrivate();
     const { id } = useParams();
 
-    console.log('id from useupadtepet: ', id)
+    console.log('id from useEditDonation: ', id)
     // Fetch pet data with React Query
-    const { data: updatePet = [], refetch, isError, isLoading, isFetching, error } = useQuery({
+    const { data: updateCamp = [], refetch, isError, isLoading, isFetching, error } = useQuery({
         queryKey: ['updatePet', id],
         queryFn: async () => {
-            const res = await axiosPrivate.get(`/pets/${id}`);
+            const res = await axiosPrivate.get(`/donation-campaigns/${id}`);
             return res.data;
         },
         enabled: !!id, // Only run the query if `id` is available
@@ -22,7 +22,7 @@ const usePetUpdate = () => {
         console.error('Error fetching pet data:', error);
     }
 
-    return { updatePet, refetch, isFetching, isLoading };
+    return { updateCamp, refetch, isFetching, isLoading };
 };
 
-export default usePetUpdate;
+export default useEditDonation;

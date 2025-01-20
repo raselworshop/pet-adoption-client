@@ -5,25 +5,32 @@ import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import toast from 'react-hot-toast';
 import ReactQuill from 'react-quill';
-import useCloudinary from '../../../Hooks/useCloudinary';
+import useCloudinary from '../../../../../Hooks/useCloudinary';
 import * as Yup from 'yup';
-import useAxiosPrivate from '../../../Hooks/useAxiosPrivate';
-import useAuth from '../../../Hooks/useAuth';
+import useAxiosPrivate from '../../../../../Hooks/useAxiosPrivate';
+import useAuth from '../../../../../Hooks/useAuth';
+import { useNavigate, useParams } from 'react-router-dom';
+import useEditDonation from '../../../../../Hooks/useEditDonation';
 
-const DonationCampForm = () => {
+const EditDonationForm = () => {
     const { uploadImage, uploading, error } = useCloudinary()
     const [campaignImageUrl, setCampaignImageUrl] = useState('')
     const [longDescription, setLongDescription] = useState('')
     const axiosPrivate = useAxiosPrivate()
     const { user } = useAuth()
+    const { id } = useParams();
+    const navigate=useNavigate()
+    const { updateCamp, refetch, isLoading } = useEditDonation()
+    console.log('id from myCamp', id)
+    console.log('DATA from useEdit to myCamp', updateCamp)
 
     const initialValues = {
-        petName: '',
-        petImage: null,
-        maxDonation: '',
-        lastDate: '',
-        shortDescription: '',
-        longDescription: '',
+        petName: updateCamp.petName || '',
+        petImage: updateCamp.petImage || null,
+        maxDonation: updateCamp.maxDonation || '',
+        lastDate: updateCamp.lastDate || '',
+        shortDescription: updateCamp.shortDescription || '',
+        longDescription: updateCamp.longDescription || '',
     }
 
     const validationSchema = Yup.object().shape({
@@ -69,17 +76,19 @@ const DonationCampForm = () => {
         try {
             const campaignData = {
                 ...values,
-                petImage: campaignImageUrl,
+                petImage: campaignImageUrl || updateCamp.petImage,
                 longDescription,
-                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString(),
                 ownerMail: user?.email,
                 ownerName: user?.displayName
             }
             console.table(campaignData)
-            const { data } = await axiosPrivate.post('/donation-campaigns', campaignData)
+            const { data } = await axiosPrivate.put(`/donation-campaigns/${id}`, campaignData)
             console.log(data)
-            if (data.status === 201 || data.status === 200 || data.insertedId) {
-                toast.success("Donation campaign created successfully")
+            if (data.status === 201 || data.status === 200 || data.modifiedCount) {
+                toast.success("Donation campaign updated successfully")
+                navigate('/dashboard/my-donations');
+                refetch()
             }
         } catch (error) {
             console.log('check error post a camp', error)
@@ -95,14 +104,15 @@ const DonationCampForm = () => {
 
     return (
         <div>
-            <Helmet><title>PA || Create Donation Campaign</title></Helmet>
+            <Helmet><title>PA || Update Donation Campaign</title></Helmet>
             <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}
+                enableReinitialize={true}
                 onSubmit={handleSubmit}>
                 {({ setFieldValue, isSubmitting }) => (
                     <div>
-                        <h2 className='text-3xl font-semibold mb-6'>Create Donation Campaign</h2>
+                        <h2 className='text-3xl font-semibold mb-6'>Update Donation Campaign</h2>
                         <Form>
                             <div>
                                 <label htmlFor="petName">Pet Name</label>
@@ -147,7 +157,7 @@ const DonationCampForm = () => {
                                 <label htmlFor="longDescription">Long Description</label>
                                 <ReactQuill
                                     className="m-2"
-                                    value={longDescription}
+                                    value={longDescription || initialValues.longDescription}
                                     onChange={(value) => {
                                         setLongDescription(value);
                                         setFieldValue('longDescription', value);
@@ -156,9 +166,9 @@ const DonationCampForm = () => {
                             </div>
                             <Button className="my-2" type="submit" disabled={isSubmitting}> Submit </Button>
                             <ErrorMessage className='text-red-500 text-sm' name="submit" component="div" />
-                            {campaignImageUrl && (
+                            {campaignImageUrl || initialValues.petImage && (
                                 <div className="flex">
-                                    <img src={campaignImageUrl} alt="Campaign Preview"
+                                    <img src={campaignImageUrl || initialValues.petImage} alt="Campaign Preview"
                                         style={{ width: '250px', height: '200px', marginTop: '10px' }} />
                                 </div>
                             )}
@@ -170,4 +180,4 @@ const DonationCampForm = () => {
     );
 };
 
-export default DonationCampForm;
+export default EditDonationForm;

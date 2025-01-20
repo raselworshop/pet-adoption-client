@@ -138,7 +138,11 @@ const UpdateMyPet = () => {
   return (
     <div>
       <Helmet><title>PA || PET UPDATE</title></Helmet>
-      <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
+      <Formik 
+      initialValues={initialValues} 
+      validationSchema={validationSchema} 
+      enableReinitialize={true}
+      onSubmit={handleSubmit}>
         {({ setFieldValue, isSubmitting, values }) => (
           <div>
             <h2 className='text-3xl font-semibold mb-6'>Upadte a Pet</h2>
