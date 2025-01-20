@@ -57,10 +57,11 @@ const DonationDetailsPage = () => {
                     <p className="mb-2">Maximum Donation: ${campDetails.maxDonationAmount}</p>
                     <p className="mb-2">Description: {campDetails.detailsUrl}</p>
                     <Button
+                    disabled={campDetails.isPaused}
                         className="px-4 py-2 rounded mt-4"
                         onClick={() => setShowModal(true)}
                     >
-                        Donate Now
+                         {campDetails.isPaused ? 'Campaign Paused' : 'Donate Now'}
                     </Button>
                 </div>
             </div>

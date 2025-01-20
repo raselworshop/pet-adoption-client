@@ -8,14 +8,17 @@ import ReactQuill from 'react-quill';
 import useCloudinary from '../../../Hooks/useCloudinary';
 import * as Yup from 'yup';
 import useAxiosPrivate from '../../../Hooks/useAxiosPrivate';
+import useAuth from '../../../Hooks/useAuth';
 
 const DonationCampForm = () => {
     const { uploadImage, uploading, error } = useCloudinary()
     const [campaignImageUrl, setCampaignImageUrl] = useState('')
     const [longDescription, setLongDescription] = useState('')
     const axiosPrivate = useAxiosPrivate()
+    const { user } = useAuth()
 
     const initialValues = {
+        petName: '',
         petImage: null,
         maxDonation: '',
         lastDate: '',
@@ -62,23 +65,26 @@ const DonationCampForm = () => {
         }
     }
 
-    const handleSubmit= async (values, {setSubmitting, setErrors}) => {
+    const handleSubmit = async (values, { setSubmitting, setErrors }) => {
         try {
             const campaignData = {
                 ...values,
                 petImage: campaignImageUrl,
                 longDescription,
-                createdAt: new Date().toISOString()
+                createdAt: new Date().toISOString(),
+                ownerMail: user?.email,
+                ownerName: user?.displayName
             }
-            const {data} = await axiosPrivate.post('/donation-campaigns', campaignData)
+            console.table(campaignData)
+            const { data } = await axiosPrivate.post('/donation-campaigns', campaignData)
             console.log(data)
-            if(data.status===201 || data.status===200 || data.insertedId){
+            if (data.status === 201 || data.status === 200 || data.insertedId) {
                 toast.success("Donation campaign created successfully")
             }
         } catch (error) {
             console.log('check error post a camp', error)
-            setErrors({submit:'Failed to create donation campaign. Please try again!'})
-        }finally{
+            setErrors({ submit: 'Failed to create donation campaign. Please try again!' })
+        } finally {
             setSubmitting(false)
         }
     }
@@ -98,6 +104,11 @@ const DonationCampForm = () => {
                     <div>
                         <h2 className='text-3xl font-semibold mb-6'>Create Donation Campaign</h2>
                         <Form>
+                            <div>
+                                <label htmlFor="petName">Pet Name</label>
+                                <Field className="dark:bg-gray-700 border m-2" type="text" name="petName" />
+                                <ErrorMessage className='text-red-500 text-sm' name="petName" component="div" />
+                            </div>
                             <div>
                                 <label htmlFor="petImage">Pet Picture</label>
                                 <input

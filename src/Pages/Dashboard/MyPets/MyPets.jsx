@@ -61,7 +61,11 @@ const MyPets = () => {
                         <div className='flex flex-col gap-2'>
                             <Button className="p-0 text-yellow-300 bg-orange-600" onClick={() => handleUpdate(row.original._id)}>Update</Button>
                             <Button className="p-0 text-red-300 bg-red-600" onClick={() => openModal(row.original)}>Delete</Button>
-                            <Button className="p-0 text-green-300 bg-green-600" onClick={() => handleAdopt(row.original._id)}>Adopt</Button>
+                            <Button className="p-0 text-green-300 bg-green-600" onClick={() => handleAdopt(row.original._id)}
+                                disabled={row.original.isAdopted}
+                            >
+                                {row.original.isAdopted ? 'Adopted' : 'Adopt'}
+                            </Button>
                         </div>
                     </>
                 ),
@@ -100,24 +104,24 @@ const MyPets = () => {
     };
 
     const handleDelete = async () => {
-        const {data} = await axiosPrivate.delete(`/my-pets/${petToDelete._id}`);
+        const { data } = await axiosPrivate.delete(`/my-pets/${petToDelete._id}`);
         console.log(data, petToDelete._id)
         setPets(pets.filter(pet => pet._id !== petToDelete._id));
         closeModal();
-        if(data.status === 200 || data.data.deletedCount>0){
+        if (data.status === 200 || data.data.deletedCount > 0) {
             toast.success("pet deleted successfull")
-        }else{
+        } else {
             toast.error(data.message || "Something is wrong")
         }
     };
 
     const handleAdopt = async (id) => {
-        const {data} = await axiosPrivate.patch(`/my-pets/status/${id}`, { isAdopted: true });
+        const { data } = await axiosPrivate.patch(`/my-pets/status/${id}`, { isAdopted: true });
         console.log(data)
         setPets(pets.map(pet => (pet._id === id ? { ...pet, isAdopted: true } : pet)));
-        if(data.modifiedCount>0){
+        if (data.modifiedCount > 0) {
             toast.success("Pet adoption status updated successfull")
-        }else{
+        } else {
             toast.error("Pet status updateing failed")
         }
     };
