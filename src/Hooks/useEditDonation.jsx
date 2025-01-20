@@ -14,7 +14,7 @@ const useEditDonation = () => {
             const res = await axiosPrivate.get(`/donation-campaigns/${id}`);
             return res.data;
         },
-        enabled: !!id, // Only run the query if `id` is available
+        enabled: !!id, //run the query when `id` is available
     });
 
     // Handle errors

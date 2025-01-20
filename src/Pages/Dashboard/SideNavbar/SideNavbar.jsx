@@ -13,6 +13,7 @@ const SideNavbar = () => {
                 <Button className="w-40 lg:w-64 mb-2"><li><Link className='flex justify-start gap-2' to={'/dashboard/myPets'}><Dog/> My Pet</Link></li></Button>
                 <Button className="w-40 lg:w-64 mb-2"><li><Link className='flex justify-start gap-2' to={'/dashboard/donationCampaignForm'}><IoCreateSharp/> Create Campaigns</Link></li></Button>
                 <Button className="w-40 lg:w-64 mb-2"><li><Link className='flex justify-start gap-2' to={'/dashboard/myCampaignsReport'}><IoCreateSharp/>My Campaigns</Link></li></Button>
+                <Button className="w-40 lg:w-64 mb-2"><li><Link className='flex justify-start gap-2' to={'/dashboard/myDonationReport'}><IoCreateSharp/>My Donations</Link></li></Button>
             </ul>
         </div>
     );
