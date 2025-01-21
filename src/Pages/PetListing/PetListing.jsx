@@ -29,7 +29,7 @@ const PetListing = () => {
         queryKey: ['pets', { search, category }],
         queryFn: fetchPets,
         getNextPageParam: (lastPage, pages) => {
-            if (lastPage.length < 3) return undefined;
+            if (lastPage.length < 10) return undefined;
             return pages.length + 1;
         }
     })

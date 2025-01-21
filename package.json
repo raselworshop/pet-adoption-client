@@ -53,6 +53,7 @@
     "slick-carousel": "^1.8.1",
     "sort-by": "^1.2.0",
     "stripe": "^17.5.0",
+    "sweetalert2": "^11.15.10",
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",
     "vaul": "^1.1.2",

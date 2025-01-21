@@ -41,8 +41,8 @@ const MyDonationCamp = () => {
             setCampaigns(campaigns.map(campaign =>
                 campaign._id === campaignId ? { ...campaign, isPaused } : campaign
             ))
-            if(res.data.modifiedCount>0){
-                toast.success(`You have successfully updated to ${isPaused? 'Paused':'Unpaused'}`)
+            if (res.data.modifiedCount > 0) {
+                toast.success(`You have successfully updated to ${isPaused ? 'Paused' : 'Unpaused'}`)
             }
         } catch (error) {
             console.log("Error updating pause status", error)
@@ -80,14 +80,14 @@ const MyDonationCamp = () => {
                 const maxDonationAmount = row.original.maxDonation;
                 const donatedAmount = row.original.donatedAmount;
                 return (
-                        <div className="w-full bg-gray-500 rounded-full h-4">
-                            <div
-                                className='bg-green-600 h-4 rounded-full'
-                                style={{
-                                    width: donatedAmount > 0 ? `${Math.min((donatedAmount / maxDonationAmount) * 100, 100)}%` : '0%'
-                                }}
-                            ></div>
-                        </div>
+                    <div className="w-full bg-gray-500 rounded-full h-4">
+                        <div
+                            className='bg-green-600 h-4 rounded-full'
+                            style={{
+                                width: donatedAmount > 0 ? `${Math.min((donatedAmount / maxDonationAmount) * 100, 100)}%` : '0%'
+                            }}
+                        ></div>
+                    </div>
                 )
             }
         },
@@ -131,7 +131,7 @@ const MyDonationCamp = () => {
         <div className="container mx-auto p-4">
             <Helmet><title>PA || MY DONATION CAMPAIGNS</title></Helmet>
             <h1 className="text-2xl font-bold mb-4">My Donation Campaigns</h1>
-            <table className="min-w-full bg-white">
+            <table className="min-w-full">
                 <thead> {table.getHeaderGroups().map(headerGroup => (
                     <tr key={headerGroup.id}>
                         {headerGroup.headers.map(header => (
@@ -156,7 +156,7 @@ const MyDonationCamp = () => {
                     ))}
                 </tbody>
             </table>
-            <div className="flex justify-between mt-4">
+            {campaigns.length > 10 && <div className="flex justify-between mt-4">
                 <button
                     onClick={table.previousPage}
                     disabled={!table.getCanPreviousPage()}>
@@ -173,7 +173,7 @@ const MyDonationCamp = () => {
                 >
                     Next
                 </button>
-            </div>
+            </div>}
             <Modal
                 isOpen={modalIsOpen}
                 onRequestClose={closeModal}
@@ -198,20 +198,20 @@ const MyDonationCamp = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {donors? <>
+                        {donors ? <>
                             {donors?.map((donor, index) => (
-                            <tr key={index}>
-                                <td className="px-4 py-2 border">{donor.name}</td>
-                                <td className="px-4 py-2 border">{donor.email}</td>
-                                <td className="px-4 py-2 border">${donor.amount}</td>
-                                <td className="px-4 py-2 border">{donor.transactionId}</td>
-                                <td className="px-4 py-2 border">{new Date(donor.date).toLocaleString()}</td>
-                            </tr>
-                        ))}
-                        </>: <>
-                        <div className='flex items-center justify-center'>
-                            <h2 className="text-2xl text-center">You don't have any donor for this campaign!</h2>
-                        </div>
+                                <tr key={index}>
+                                    <td className="px-4 py-2 border">{donor.name}</td>
+                                    <td className="px-4 py-2 border">{donor.email}</td>
+                                    <td className="px-4 py-2 border">${donor.amount}</td>
+                                    <td className="px-4 py-2 border">{donor.transactionId}</td>
+                                    <td className="px-4 py-2 border">{new Date(donor.date).toLocaleString()}</td>
+                                </tr>
+                            ))}
+                        </> : <>
+                            <div className='flex items-center justify-center'>
+                                <h2 className="text-2xl text-center">You don't have any donor for this campaign!</h2>
+                            </div>
                         </>}
                     </tbody>
                 </table>

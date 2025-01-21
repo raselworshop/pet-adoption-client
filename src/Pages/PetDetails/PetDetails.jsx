@@ -47,17 +47,19 @@ const PetDetails = () => {
         try {
             if (!user) {
                 toast.error('Please Login to adopt')
-            } else {
-                const response = await privateAxios.post('/adopted', adoptionData)
+            }else if(pet.ownerMail===user?.email){
+                toast.error("Owner can't be able to make adoption request")
+            }else {
+                const response = await privateAxios.post('/request-adoption', adoptionData)
                 console.log(response.data)
-                if (response.data.insertedId) {
-                    toast.success(`Congratulations! Successfully adopted`)
+                if (response.data.result.insertedId) {
+                    toast.success(`Congratulations! Successfully reuqested for adoption`)
                     refetch()
                 }
             }
         } catch (error) {
             console.log("Taking adoption error", error)
-            toast.error(error.message)
+            toast.error(error.response.data.message)
         }
     }
 

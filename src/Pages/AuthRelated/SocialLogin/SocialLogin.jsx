@@ -31,7 +31,12 @@ const SocialLogin = () => {
                 toast.success(`successfully created user is ${result.user.displayName}`)
                 navigate('/')
             } else {
-                toast.info(`Welcome back, ${result.user.displayName}`);
+                toast.success(`Welcome back, ${result.user.displayName}`);
+                navigate('/')
+            }
+            if(res.data.message){
+                toast.success(`Welcome back, ${result.user.displayName}`);
+                navigate('/')
             }
             console.log('Response:', res.data);
 
