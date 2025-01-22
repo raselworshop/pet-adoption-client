@@ -23,6 +23,7 @@ const CampaignManagement = () => {
                     ...campaign,
                     isPaused: campaign.isPaused ?? false
                 }));
+                console.log(campaignsData)
                 setCampaigns(campaignsData);
             } catch (error) {
                 console.error("Error fetching campaign data", error);
@@ -227,14 +228,14 @@ const CampaignManagement = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {donors.length > 0 ? (
+                        {donors ? (
                             donors.map((donor, index) => (
                                 <tr key={index}>
                                     <td className="px-4 py-2 border">{donor.name}</td>
                                     <td className="px-4 py-2 border">{donor.email}</td>
                                     <td className="px-4 py-2 border">${donor.amount}</td>
-                                    <td className="px-4 py-2 border">{donor.transactionId}</td>
-                                    <td className="px-4 py-2 border">{new Date(donor.date).toLocaleString()}</td>
+                                    <td className="px-4 py-2 border">{donor.transactionId ? donor.transactionId : 'N/A'}</td>
+                                    <td className="px-4 py-2 border">{donor.date ? new Date(donor.date).toLocaleString() : "Date Not Found"}</td>
                                 </tr>
                             ))
                         ) : (<tr>

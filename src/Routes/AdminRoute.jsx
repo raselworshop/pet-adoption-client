@@ -2,6 +2,7 @@ import React from 'react';
 import useAuth from '../Hooks/useAuth';
 import useAdmin from '../Hooks/useAdmin';
 import { Navigate, useLocation } from 'react-router-dom';
+import ButtonLoading from '@/components/components/ui/ButtonLoading';
 
 const AdminRoute = ({children}) => {
   const { user, loading } = useAuth();

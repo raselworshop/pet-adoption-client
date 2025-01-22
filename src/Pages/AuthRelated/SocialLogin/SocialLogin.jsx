@@ -70,6 +70,7 @@ const SocialLogin = () => {
                             navigate('/')
                         } else {
                             toast.error(`Welcome back, ${userInfo.name}`)
+                            navigate('/')
                         }
 
                         // Set user data in state
