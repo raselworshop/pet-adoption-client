@@ -31,7 +31,9 @@ const PetListing = () => {
         getNextPageParam: (lastPage, pages) => {
             if (lastPage.length < 10) return undefined;
             return pages.length + 1;
-        }
+        },
+        staleTime: 0, 
+        cacheTime: 0,
     })
 
     const { ref, inView } = useInView({
@@ -50,7 +52,7 @@ const PetListing = () => {
     }, [search, category, refetch])
 
     const navigateToDetails=(id)=>{
-        console.log(id)
+        // console.log(id)
         navigate(`/petDetails/${id}`)
     }
 

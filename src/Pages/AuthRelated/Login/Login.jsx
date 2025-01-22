@@ -37,11 +37,11 @@ const Login = () => {
 
     // Form Submission Handler
     const onSubmit = (values, { setSubmitting }) => {
-        console.log('Form Data:', values);
+        // console.log('Form Data:', values);
         // alert('Login Successful!');
         userSignIn(values.email, values.password)
             .then(result => {
-                console.log(result.user)
+                // console.log(result.user)
                 if (result.user.email) {
                     toast.success('user successfully logged in')
                     navigate(from, {replace:true})

@@ -68,7 +68,7 @@ const AuthProvider = ({ children }) => {
                 setLoading(false)
             }
             
-            console.log("Current user captured", currentUser)
+            // console.log("Current user captured", currentUser)
         })
         return () => {
             return unsubscribe();

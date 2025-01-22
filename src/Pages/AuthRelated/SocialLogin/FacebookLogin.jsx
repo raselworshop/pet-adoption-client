@@ -32,11 +32,11 @@ const FacebookLogin = () => {
     const handleAuthResponse = (authResponse) => {
         const { accessToken, userID } = authResponse;
 
-        console.log('Access Token:', accessToken);
-        console.log('User ID:', userID);
+        // console.log('Access Token:', accessToken);
+        // console.log('User ID:', userID);
 
         FB.api('/me', { fields: 'name,email,picture' }, function(response) {
-            console.log('User Profile:', response);
+            // console.log('User Profile:', response);
             setUser({
                 uid: userID,
                 displayName: response.name,

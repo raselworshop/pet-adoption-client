@@ -13,17 +13,18 @@ const DonationDetailsPage = () => {
     const privateAxios = useAxiosPrivate()
     const [showModal, setShowModal] = useState(false)
 
-    console.log('ID from URL:', id);
+    // console.log('ID from URL:', id);
 
     const fetchCampDetails = async (id) => {
-        console.log(`/donation-campaigns/${id}`);
+        // console.log(`/donation-campaigns/${id}`);
+
         const response = await privateAxios.get(`/donation-campaigns/${id}`)
-        console.log(response.data)
+        // console.log(response.data)
         return response.data;
     }
     const fetchRecomCamp = async () => {
         const response = await privateAxios.get(`/donation-campaigns/random?limit=3`)
-        console.log(response.data)
+        // console.log(response.data)
         return response.data;
     }
 
@@ -37,7 +38,7 @@ const DonationDetailsPage = () => {
         queryFn: fetchRecomCamp
     })
 
-    console.log(campDetails)
+    // console.log(campDetails)
     if (detailsLoading || recomLoading) return <ButtonLoading />
 
     return (

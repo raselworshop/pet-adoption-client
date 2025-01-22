@@ -7,7 +7,7 @@ const CampaignCard = ({ campaign }) => {
   const navigate = useNavigate()
 
   const handleDetails=(id)=>{
-    console.log(id)
+    // console.log(id)
     navigate(`/campDetails/${id}`)
 }
 

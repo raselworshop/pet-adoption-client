@@ -5,6 +5,7 @@ import CallToAction from '../Home/petcategory/CallToAction';
 import AboutUs from '../Home/petcategory/AboutUs';
 import { Separator } from '../../components/components/ui/separator';
 import SlickSlider from './petcategory/silder/SlickSlider';
+import WelComePage from './petcategory/WelComePage';
 
 const Home = () => {
     return (
@@ -15,6 +16,8 @@ const Home = () => {
             <Separator className="my-4"/>
             <CallToAction/>
             <SlickSlider/>
+            <Separator className="my-4"/>
+            <WelComePage/>
             <Separator className="my-4"/>
             <AboutUs/>
             <Separator className="my-4"/>

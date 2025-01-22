@@ -18,7 +18,7 @@ const SocialLogin = () => {
     const handleLogin = async (provider) => {
         try {
             const result = await signInWithPopup(auth, provider);
-            console.log('User Info:', result.user);
+            // console.log('User Info:', result.user);
 
             const userinfo = {
                 name: result.user.displayName,
@@ -38,11 +38,11 @@ const SocialLogin = () => {
                 toast.success(`Welcome back, ${result.user.displayName}`);
                 navigate('/')
             }
-            console.log('Response:', res.data);
+            // console.log('Response:', res.data);
 
             setUser(result.user);
         } catch (error) {
-            console.error('Login Error:', error);
+            // console.error('Login Error:', error);
         }
     };
 
@@ -75,15 +75,15 @@ const SocialLogin = () => {
 
                         // Set user data in state
                         setUser(userData);
-                        console.log('User Info:', userInfo);
+                        // console.log('User Info:', userInfo);
 
                     } catch (error) {
-                        console.error('Error during user check or creation:', error);
+                        // console.error('Error during user check or creation:', error);
                         toast.error('An error occurred during the login process.');
                     }
                 });
             } else {
-                console.error('User cancelled login or did not fully authorize.');
+                // console.error('User cancelled login or did not fully authorize.');
                 toast.error('Login failed or cancelled.');
             }
         }, { scope: 'public_profile,email' });

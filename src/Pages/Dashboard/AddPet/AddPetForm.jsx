@@ -19,8 +19,8 @@ const AddPetForm = () => {
   const { uploadImage, uploading, error } = useCloudinary();
   const axiosPrivate = useAxiosPrivate()
   const navigate = useNavigate()
-  console.log('pet staste', user?.displayName,
-     user?.email)
+  // console.log('pet staste', user?.displayName,
+  //    user?.email)
 
   const initialValues = {
     petImage: null,
@@ -85,7 +85,7 @@ const AddPetForm = () => {
   }
 
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
-    console.log('image before upload', values.petImage) 
+    // console.log('image before upload', values.petImage) 
     try {
 
       const petData = {
@@ -95,7 +95,7 @@ const AddPetForm = () => {
         isAdopted: false,
       };
 
-      console.table(petData)
+      // console.table(petData)
       if (user && user.email) {
         const res = await axiosPrivate.post('/pets', petData);
         if (res.status === 200) {

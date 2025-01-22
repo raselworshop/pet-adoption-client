@@ -56,8 +56,8 @@ const Register = () => {
     });
 
     const onSubmit = async (values, { setSubmitting }) => {
-        console.log('Form data', values);
-        console.log('Form data', values.email);
+        // console.log('Form data', values);
+        // console.log('Form data', values.email);
 
         if (profileImage) {
             setUploading(true)
@@ -66,10 +66,10 @@ const Register = () => {
                 if (imageUrl) {
                     setProfileImageUrl(imageUrl);
                     values.photoURL = imageUrl;
-                    console.log('Form data with image URL:', values);
+                    // console.log('Form data with image URL:', values);
                 }
             } catch (error) {
-                console.error('Image upload error:', error);
+                // console.error('Image upload error:', error);
             } finally {
                 setUploading(false);
             }
@@ -77,10 +77,10 @@ const Register = () => {
 
         try {
             const response = await createUser(values.email, values.password);
-            console.log('User creation response:', response); //why only from here consoled above not under
+            // console.log('User creation response:', response); //why only from here consoled above not under
             updateUserProfile(values.fullname, values.photoURL)
                 .then(async (result) => {
-                    console.log('send to data base: ', result)
+                    // console.log('send to data base: ', result)
                     const userinfo = {
                         name: values.fullname,
                         email: values.email,
@@ -88,32 +88,32 @@ const Register = () => {
                         userName: values.username,
                         role: 'user'
                     }
-                    console.table(userinfo)
+                    // console.table(userinfo)
                     try {
                         const res = await axiosPublic.post('/users', userinfo);
                         if (res.data.insertedId) {
                             toast.success(`successfully created user is ${values.fullname}`)
                             navigate('/')
                         }
-                        console.log('Response:', res.data);
-                        console.log('Axios Base URL:', axiosPublic.defaults.baseURL);
+                        // console.log('Response:', res.data);
+                        // console.log('Axios Base URL:', axiosPublic.defaults.baseURL);
 
                     } catch (error) {
                         if (error.response) {
-                            console.error('Server Error:', error.response.data);
+                            // console.error('Server Error:', error.response.data);
                             toast.error(error.response.data)
                         } else if (error.request) {
                             toast.error(error.request)
-                            console.error('No Response Received:', error.request);
+                            // console.error('No Response Received:', error.request);
                         } else {
                             toast.error(error.message)
-                            console.error('Axios Error:', error.message);
+                            // console.error('Axios Error:', error.message);
                         }
                     }
                 })
 
         } catch (error) {
-            console.error('User creation error:', error);
+            // console.error('User creation error:', error);
             toast.error(error.message)
         } finally {
             setSubmitting(false);

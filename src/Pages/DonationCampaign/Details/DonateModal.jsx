@@ -10,7 +10,7 @@ import toast from 'react-hot-toast';
 
 // Stripe Promise
 const stripePromise = loadStripe(import.meta.env.VITE_PAYMENT_GATEWAY);
-console.log('stripe promise key:', import.meta.env.VITE_PAYMENT_GATEWAY)
+// console.log('stripe promise key:', import.meta.env.VITE_PAYMENT_GATEWAY)
 
 const DonateForm = ({ onClose, campaignId, category }) => {
     const { register, handleSubmit, formState: { errors }, setValue } = useForm();
@@ -26,7 +26,7 @@ const DonateForm = ({ onClose, campaignId, category }) => {
         const { amount, donorName, donorEmail } = data;
 
         if (!stripe || !elements) {
-            console.error("Stripe.js has not loaded yet.");
+            // console.error("Stripe.js has not loaded yet.");
             return;
         }
 
@@ -41,19 +41,21 @@ const DonateForm = ({ onClose, campaignId, category }) => {
         })
 
         if (error) {
-            console.log('payment error', error)
+            // console.log('payment error', error)
+            toast.error('Some thing is wrong!')
         } else {
-            console.log('payment method', paymentMethod)
+            // console.log('payment method', paymentMethod)
+            toast.success('Procces successful')
         }
 
         const payInfo = {
             campaignId, amount, donorName, donorEmail, userEmail: user?.email
         }
-        console.table(payInfo)
+        // console.table(payInfo)
 
         try {
             const { data } = await axiosPrivate.post('/create-payment-intent', payInfo)
-            console.log("client secret: ", data)
+            // console.log("client secret: ", data)
 
             // confirm payment 
             const { paymentIntent, error } = await stripe.confirmCardPayment(data.clientSecret, {
@@ -66,10 +68,10 @@ const DonateForm = ({ onClose, campaignId, category }) => {
                 }
             })
             if (error) {
-                console.log("from payment intent", error)
+                // console.log("from payment intent", error)
                 toast.error(error.message)
             }
-            console.log("payment intent success", paymentIntent)
+            // console.log("payment intent success", paymentIntent)
             if (paymentIntent.status === "succeeded") {
                 const updateData = {
                     ...payInfo,
@@ -78,19 +80,20 @@ const DonateForm = ({ onClose, campaignId, category }) => {
                 }
                 try {
                     const res = await axiosPrivate.post('/update-donation', updateData)
-                    console.log('backend updated res: ', res.data)
+                    // console.log('backend updated res: ', res.data)
                     toast.success(`your donation has been successfull! 
                         TSX: ${paymentIntent.id}
                         `)
                 } catch (error) {
-                    console.error("Error updating transaction in backend:", updateError);
+                    // console.error("Error updating transaction in backend:", updateError);
                     toast.error("Failed to update donation record.");
                 }
             }
             setLoading(false)
         } catch (error) {
             setLoading(false)
-            console.error('Payment Intent creation failed:', error)
+            // console.error('Payment Intent creation failed:', error)
+            toast.error('Making succesfull payment Error')
         }
 
     };

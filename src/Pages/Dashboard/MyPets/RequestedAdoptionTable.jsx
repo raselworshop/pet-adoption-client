@@ -20,7 +20,7 @@ const RequestedAdoptionTable = () => {
         setRequests(response.data);
         setLoading(false);
       } catch (err) {
-        console.error('Error fetching requests:', err);
+        // console.error('Error fetching requests:', err);
         setError(err.response?.data?.message || 'An error occurred.');
         setLoading(false);
       }
@@ -37,7 +37,7 @@ const RequestedAdoptionTable = () => {
       toast.success(response.data.message || 'Request cancelled successfully!');
       setRequests((prev) => prev.filter((req) => req._id !== requestId));
     } catch (err) {
-      console.error('Error cancelling request:', err);
+      // console.error('Error cancelling request:', err);
       toast.error(err.response?.data?.message || 'Failed to cancel request.');
     }
   };

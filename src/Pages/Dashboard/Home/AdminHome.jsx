@@ -18,7 +18,7 @@ const AdminHome = () => {
         queryKey: ['admin-stats'],
         queryFn: async () => {
             const res = await axiosPrivate.get('/admin-analytics')
-            console.log(res.data || [])
+            // console.log(res.data || [])
             return res.data;
         }
     })
@@ -26,7 +26,7 @@ const AdminHome = () => {
         queryKey: ['overview-donation'],
         queryFn: async () => {
             const res = await axiosPrivate.get('/donations-by-category')
-            console.log(res.data)
+            // console.log(res.data)
             return res.data;
         }
     })

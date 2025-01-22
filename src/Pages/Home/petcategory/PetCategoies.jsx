@@ -6,9 +6,10 @@ import catImage from '../../../assets/Categories/cat.jpg';
 import dogImage from '../../../assets/Categories/dog.jpg';
 import rabbitImage from '../../../assets/Categories/rabbit.jpg';
 import birdImage from '../../../assets/Categories/FavIcon.png';
+import { useNavigate } from 'react-router-dom';
 
 const petCategories = [
-  { name: 'Cat', imageUrl: catImage },
+  { name: 'cat', imageUrl: catImage },
   { name: 'Dog', imageUrl: dogImage },
   { name: 'Rabbit', imageUrl: rabbitImage },
   { name: 'Bird', imageUrl: birdImage }, 
@@ -16,6 +17,12 @@ const petCategories = [
 
 
 const PetsCategory = () => {
+  const navigate = useNavigate()
+
+  const handleCategoryClick=(category)=>{
+    navigate(`/petListing`)
+  }
+
   return (
     <div className="grid md:grid-cols-2 gap-4">
       {petCategories.map((category) => (
@@ -25,7 +32,11 @@ const PetsCategory = () => {
           </CardHeader>
           <CardContent className="flex flex-col items-center">
             <CardTitle className="text-xl font-bold">{category.name}s</CardTitle>
-            <Button className="mt-2">Explore {category.name}s</Button>
+            <Button
+            onClick={()=> handleCategoryClick(category.name)}
+            className="mt-2">
+              Explore {category.name}s
+              </Button>
           </CardContent>
         </Card>
       ))}

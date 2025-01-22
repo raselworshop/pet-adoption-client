@@ -19,7 +19,7 @@ const MyPets = () => {
     useEffect(() => {
         const fetchPets = async () => {
             const response = await axiosPrivate.get(`/my-pets/${user?.email}`);
-            console.log('Fetched Pets:', response.data);
+            // console.log('Fetched Pets:', response.data);
             const petSerialNo = response.data.map((pet, idx) => ({
                 ...pet,
                 serialNumber: idx + 1
@@ -86,10 +86,10 @@ const MyPets = () => {
     const handleUpdate = (id) => {
         // Redirect to the update page
         if (!id) {
-            console.error('No ID found for this pet.');
+            // console.error('No ID found for this pet.');
             return;
         }
-        console.log('ID found for this pet.', id);
+        // console.log('ID found for this pet.', id);
         navigate(`/dashboard/update-pet/${id}`);
     };
 
@@ -105,7 +105,8 @@ const MyPets = () => {
 
     const handleDelete = async () => {
         const { data } = await axiosPrivate.delete(`/my-pets/${petToDelete._id}`);
-        console.log(data, petToDelete._id)
+        // console.log(data, petToDelete._id)
+
         setPets(pets.filter(pet => pet._id !== petToDelete._id));
         closeModal();
         if (data.status === 200 || data.data.deletedCount > 0) {
@@ -117,7 +118,8 @@ const MyPets = () => {
 
     const handleAdopt = async (id) => {
         const { data } = await axiosPrivate.patch(`/my-pets/status/${id}`, { isAdopted: true });
-        console.log(data)
+        // console.log(data)
+        
         setPets(pets.map(pet => (pet._id === id ? { ...pet, isAdopted: true } : pet)));
         if (data.modifiedCount > 0) {
             toast.success("Pet adoption status updated successfull")

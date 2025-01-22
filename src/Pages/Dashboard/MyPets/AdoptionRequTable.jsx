@@ -25,7 +25,7 @@ const AdoptionRequTable = () => {
         setLoading(false);
       } catch (error) {
         setLoading(false);
-        console.error('Error fetching adoption requests:', error);
+        // console.error('Error fetching adoption requests:', error);
         toast.error(error.response.data.message);
       }
     };
@@ -55,7 +55,7 @@ const AdoptionRequTable = () => {
                 ));
           
               } catch (error) {
-                console.error('Error updating adoption status:', error);
+                // console.error('Error updating adoption status:', error);
                 toast.error('Failed to update adoption status.');
               }
           Swal.fire({

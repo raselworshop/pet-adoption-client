@@ -14,7 +14,7 @@ const MyDonationTable = () => {
 
     const fetchUserDonation = async (email) => {
         const { data } = await axiosPrivate.get(`/donors/campaigns?email=${email}`)
-        console.log(data)
+        // console.log(data)
         return data
     }
 
@@ -28,7 +28,7 @@ const MyDonationTable = () => {
     const refundMutation = useMutation({
         mutationFn: async ({ id, email }) => {
             const { data } = await axiosPrivate.post('/donors/refund', { id, email });
-            console.log(data)
+            // console.log(data)
             if (data.amount) {
                 toast.success(data.message)
             }

@@ -6,7 +6,7 @@ const useEditDonation = () => {
     const axiosPrivate = useAxiosPrivate();
     const { id } = useParams();
 
-    console.log('id from useEditDonation: ', id)
+    // console.log('id from useEditDonation: ', id)
     // Fetch pet data with React Query
     const { data: updateCamp = [], refetch, isError, isLoading, isFetching, error } = useQuery({
         queryKey: ['updatePet', id],
@@ -19,7 +19,7 @@ const useEditDonation = () => {
 
     // Handle errors
     if (isError) {
-        console.error('Error fetching pet data:', error);
+        // console.error('Error fetching pet data:', error);
     }
 
     return { updateCamp, refetch, isFetching, isLoading };

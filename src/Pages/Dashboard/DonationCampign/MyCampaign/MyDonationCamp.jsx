@@ -21,14 +21,14 @@ const MyDonationCamp = () => {
             setLoading(true)
             try {
                 const { data } = await axiosPrivate.get(`/my-donation-campaigns/${user?.email}`)
-                console.log(data)
+                // console.log(data)
                 const campaignsData = data.map(campaign => ({
                     ...campaign,
                     isPaused: campaign.isPaused ?? false
                 }));
                 setCampaigns(campaignsData)
             } catch (error) {
-                console.error("Error frtching campaign data", error)
+                // console.error("Error frtching campaign data", error)
             }
         }
         fetchCamp();
@@ -37,7 +37,7 @@ const MyDonationCamp = () => {
     const handlePause = async (campaignId, isPaused) => {
         try {
             const res = await axiosPrivate.patch(`/donation-campaign/pause/${campaignId}`, { isPaused })
-            console.log(res.data)
+            // console.log(res.data)
             setCampaigns(campaigns.map(campaign =>
                 campaign._id === campaignId ? { ...campaign, isPaused } : campaign
             ))
@@ -45,17 +45,17 @@ const MyDonationCamp = () => {
                 toast.success(`You have successfully updated to ${isPaused ? 'Paused' : 'Unpaused'}`)
             }
         } catch (error) {
-            console.log("Error updating pause status", error)
+            // console.log("Error updating pause status", error)
         }
     }
 
     const handleEdit = (id) => {
-        console.log(id)
+        // console.log(id)
         navigate(`/dashboard/editDonation/${id}`)
     }
 
     const handleViewDonors = (donors) => {
-        console.log(donors)
+        // console.log(donors)
         setDonors(donors)
         setModalIsOpen(true)
     }

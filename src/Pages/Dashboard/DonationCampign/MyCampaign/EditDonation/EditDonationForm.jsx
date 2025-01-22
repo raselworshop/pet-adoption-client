@@ -21,8 +21,8 @@ const EditDonationForm = () => {
     const { id } = useParams();
     const navigate=useNavigate()
     const { updateCamp, refetch, isLoading } = useEditDonation()
-    console.log('id from myCamp', id)
-    console.log('DATA from useEdit to myCamp', updateCamp)
+    // console.log('id from myCamp', id)
+    // console.log('DATA from useEdit to myCamp', updateCamp)
 
     const initialValues = {
         petName: updateCamp.petName || '',
@@ -58,7 +58,7 @@ const EditDonationForm = () => {
         }
         try {
             const res = await uploadImage(file)
-            console.log(res)
+            // console.log(res)
             if (res.url) {
                 setFieldValue('petImage', res.url)
                 setCampaignImageUrl(res.url)
@@ -67,7 +67,7 @@ const EditDonationForm = () => {
                 toast.error('Image upload failed')
             }
         } catch (error) {
-            console.log('Error uploading image', error)
+            // console.log('Error uploading image', error)
             toast.error(error.message)
         }
     }
@@ -82,16 +82,16 @@ const EditDonationForm = () => {
                 ownerMail: user?.email,
                 ownerName: user?.displayName
             }
-            console.table(campaignData)
+            // console.table(campaignData)
             const { data } = await axiosPrivate.put(`/donation-campaigns/${id}`, campaignData)
-            console.log(data)
+            // console.log(data)
             if (data.status === 201 || data.status === 200 || data.modifiedCount) {
                 toast.success("Donation campaign updated successfully")
                 navigate('/dashboard/my-donations');
                 refetch()
             }
         } catch (error) {
-            console.log('check error post a camp', error)
+            // console.log('check error post a camp', error)
             setErrors({ submit: 'Failed to create donation campaign. Please try again!' })
         } finally {
             setSubmitting(false)

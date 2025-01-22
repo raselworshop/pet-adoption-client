@@ -6,7 +6,7 @@ const usePetUpdate = () => {
     const axiosPrivate = useAxiosPrivate();
     const { id } = useParams();
 
-    console.log('id from useupadtepet: ', id)
+    // console.log('id from useupadtepet: ', id)
     // Fetch pet data with React Query
     const { data: updatePet = [], refetch, isError, isLoading, isFetching, error } = useQuery({
         queryKey: ['updatePet', id],
@@ -19,7 +19,7 @@ const usePetUpdate = () => {
 
     // Handle errors
     if (isError) {
-        console.error('Error fetching pet data:', error);
+        // console.error('Error fetching pet data:', error);
     }
 
     return { updatePet, refetch, isFetching, isLoading };

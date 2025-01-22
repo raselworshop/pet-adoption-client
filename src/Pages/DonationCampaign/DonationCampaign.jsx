@@ -10,7 +10,7 @@ const DonationCampaign = () => {
 
     const fetchCamp = async ({ pageParam = 1 }) => {
         const response = await privateAxios.get(`/donation-campaigns?page=${pageParam}&limit=6`)
-        console.log(response.data)
+        // console.log(response.data)
         return response.data;
     }
     const { ref, inView } = useInView()
@@ -33,7 +33,7 @@ const DonationCampaign = () => {
         }
     }, [inView, hasNextPage, fetchNextPage])
 
-    console.log('all donations', data)
+    // console.log('all donations', data)
     if(isLoading) return <ButtonLoading/>
 
     return (

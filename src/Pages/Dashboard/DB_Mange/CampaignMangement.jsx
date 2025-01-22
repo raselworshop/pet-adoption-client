@@ -23,10 +23,10 @@ const CampaignManagement = () => {
                     ...campaign,
                     isPaused: campaign.isPaused ?? false
                 }));
-                console.log(campaignsData)
+                // console.log(campaignsData)
                 setCampaigns(campaignsData);
             } catch (error) {
-                console.error("Error fetching campaign data", error);
+                // console.error("Error fetching campaign data", error);
             }
             setLoading(false);
         };
@@ -43,7 +43,7 @@ const CampaignManagement = () => {
                 toast.success(`You have successfully updated to ${isPaused ? 'Paused' : 'Unpaused'}`);
             }
         } catch (error) {
-            console.log("Error updating pause status", error);
+            // console.log("Error updating pause status", error);
         }
     };
 
@@ -60,7 +60,7 @@ const CampaignManagement = () => {
                     toast.success('Campaign deleted successfully');
                 }
             } catch (error) {
-                console.log("Error deleting campaign", error);
+                // console.log("Error deleting campaign", error);
             }
         }
     };

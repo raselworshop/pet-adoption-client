@@ -19,7 +19,7 @@ const PetManagementTable = () => {
         const response = await axiosPrivate.get('/pets',);
         setPets(response.data);
       } catch (error) {
-        console.error('Error fetching pets:', error);
+        // console.error('Error fetching pets:', error);
         toast.error('Failed to fetch pets.');
       }
     };
@@ -30,11 +30,11 @@ const PetManagementTable = () => {
   const handleUpdatePet = (id) => {
     // Redirect to the update page
     if (!id) {
-      console.error('No ID found for this pet.');
+      // console.error('No ID found for this pet.');
       Swal.error(`Your provided id not found`)
       return;
     }
-    console.log('ID found for this pet.', id);
+    // console.log('ID found for this pet.', id);
     navigate(`/dashboard/update-pet/${id}`);
   };
 
@@ -50,7 +50,7 @@ const PetManagementTable = () => {
     }).then(async(result) => {
       if (result.isConfirmed) {
         const { data } = await axiosPrivate.delete(`/my-pets/${id}`);
-        console.log(data, id)
+        // console.log(data, id)
         setPets(pets.filter(pet => pet._id !== id));
 
         if (data.status === 200 || data.data.deletedCount > 0) {
@@ -73,7 +73,7 @@ const PetManagementTable = () => {
       setPets(pets.map(pet => pet._id === petId ? { ...pet, isAdopted } : pet));
     }
     catch (error) {
-      console.error('Error updating pet status:', error);
+      // console.error('Error updating pet status:', error);
       toast.error('Failed to update pet status.');
     }
   };

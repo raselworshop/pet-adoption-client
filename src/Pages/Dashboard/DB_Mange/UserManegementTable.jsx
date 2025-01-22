@@ -14,10 +14,10 @@ const UserManagementTable = () => {
     const fetchUsers = async () => {
       try {
         const response = await axiosPrivate.get('/users');
-        console.log(response.data)
+        // console.log(response.data)
         setUsers(response.data);
       } catch (error) {
-        console.error('Error fetching users:', error);
+        // console.error('Error fetching users:', error);
         toast.error('Failed to fetch users.');
       }
     };
@@ -33,7 +33,7 @@ const UserManagementTable = () => {
       toast.success(response.data.message);
       setUsers(users.map(user => user._id === id ? { ...user, role: 'admin' } : user));
     } catch (error) {
-      console.error('Error promoting user to admin:', error);
+      // console.error('Error promoting user to admin:', error);
       toast.error('Failed to promote user to admin.');
     }
   };
@@ -44,7 +44,7 @@ const UserManagementTable = () => {
       toast.success(response.data.message);
       setUsers(users.map(user => user._id === id ? { ...user, banned: true } : user));
     } catch (error) {
-      console.error('Error banning user:', error);
+      // console.error('Error banning user:', error);
       toast.error('Failed to ban user.');
     }
   };

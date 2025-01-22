@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import useAuth from './useAuth';
 
 const axiosPrivate = axios.create({
-    baseURL: `http://localhost:5000`,
-    // withCredentials: true
+    baseURL: `https://pet-adoption-server-opal.vercel.app`,
+    withCredentials: true
 })
 const useAxiosPrivate = () => {
     const { signOutUser } = useAuth()
@@ -12,7 +12,7 @@ const useAxiosPrivate = () => {
 
     axiosPrivate.interceptors.request.use((config)=>{
         const token = localStorage.getItem('access-token')
-        console.log('Request stopped by interceptors', token)
+        // console.log('Request stopped by interceptors', token)
         config.headers.Authorization = `Bearer ${token}`
         return config;
     }, (err)=>{
@@ -24,7 +24,7 @@ const useAxiosPrivate = () => {
         return response;
     }, async(error)=>{
         const status = error.response.status;
-        console.log('error in response inetrceptors', status)
+        // console.log('error in response inetrceptors', status)
         
         if(status===401 || status===403){
             await signOutUser();

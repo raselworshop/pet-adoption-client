@@ -24,10 +24,11 @@ const PetDetails = () => {
         const fetchPet = async () => {
             try {
                 const response = await privateAxios.get(`/pets/${id}`)
-                console.log(response.data)
+                // console.log(response.data)
                 setPet(response.data)
             } catch (error) {
-                console.error('Error fetching pet details:', error);
+                // console.error('Error fetching pet details:', error);
+                toast.error('Something is wrong loading pet details')
             }
         }
         fetchPet()
@@ -43,7 +44,7 @@ const PetDetails = () => {
             adopterPhone: values.phone,
             adopterAddress: values.address
         }
-        console.table(adoptionData)
+        // console.table(adoptionData)
         try {
             if (!user) {
                 toast.error('Please Login to adopt')
@@ -51,14 +52,14 @@ const PetDetails = () => {
                 toast.error("Owner can't be able to make adoption request")
             }else {
                 const response = await privateAxios.post('/request-adoption', adoptionData)
-                console.log(response.data)
+                // console.log(response.data)
                 if (response.data.result.insertedId) {
                     toast.success(`Congratulations! Successfully reuqested for adoption`)
                     refetch()
                 }
             }
         } catch (error) {
-            console.log("Taking adoption error", error)
+            // console.log("Taking adoption error", error)
             toast.error(error.response.data.message)
         }
     }

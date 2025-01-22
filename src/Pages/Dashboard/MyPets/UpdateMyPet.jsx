@@ -27,12 +27,12 @@ const UpdateMyPet = () => {
   const axiosPrivate = useAxiosPrivate()
   const { id } = useParams()
   const { updatePet, refetch, isLoading, isFetching } = usePetUpdate()
-  console.log(
-    'pet staste',
-    user?.displayName,
-    user?.email,
-    updatePet
-  )
+  // console.log(
+  //   'pet staste',
+  //   user?.displayName,
+  //   user?.email,
+  //   updatePet
+  // )
   if(isFetching) return <div>Data Fetching..</div>
  if(isLoading) return <ButtonLoading/>
   const initialValues = {
@@ -98,7 +98,7 @@ const UpdateMyPet = () => {
   }
 
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
-    console.log('image before upload', values.petImage)
+    // console.log('image before upload', values.petImage)
     try {
 
       const petData = {
@@ -108,14 +108,14 @@ const UpdateMyPet = () => {
         isAdopted: false,
       };
 
-      console.table(petData)
+      // console.table(petData)
       if (!petData) {
         toast.error('Pet data is missing or invalid.');
         return;
       }
       if (user && user.email) {
         const res = await axiosPrivate.put(`/my-pets/${id}`, petData);
-        console.log(res.data)
+        // console.log(res.data)
         if (res.result.modifiedCount===0) {
           refetch()
           toast.success("Pet upadted successfully!")
@@ -124,7 +124,7 @@ const UpdateMyPet = () => {
         return toast.error('Please login first')
       }
     } catch (error) {
-      console.log(error)
+      // console.log(error)
       setErrors({ submit: 'Failed to update pet. Please try again.' });
     } finally {
       setSubmitting(false);
