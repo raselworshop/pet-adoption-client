@@ -11,6 +11,7 @@ const UserHome = () => {
                 <span>Hi, Welcome</span> 
                 {user? user.displayName : "Back"}
             </h2>
+            <p className='text-center'>User Details coming soon</p>
         </div>
     );
 };

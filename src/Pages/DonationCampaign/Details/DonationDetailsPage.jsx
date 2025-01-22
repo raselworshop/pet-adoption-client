@@ -69,6 +69,7 @@ const DonationDetailsPage = () => {
             {showModal && (
                 <DonateModal
                     campaignId={id}
+                    category = {campDetails.category}
                     onClose={() => setShowModal(false)}
                 />
             )}

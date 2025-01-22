@@ -1,20 +1,58 @@
 import { Button } from '@/components/components/ui/button';
-import { CatIcon, HomeIcon, Users } from 'lucide-react';
+import { MenubarShortcut } from '@/components/components/ui/menubar';
+import { Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarSeparator, MenubarTrigger } from '@radix-ui/react-menubar';
+import { CatIcon, Dog, HomeIcon, Users } from 'lucide-react';
 import React from 'react';
+import { IoCreateSharp } from 'react-icons/io5';
 import { Link } from 'react-router-dom';
+import { FaHamburger } from "react-icons/fa";
+import useAuth from '../../../Hooks/useAuth';
 
 const TopNavbar = () => {
+    const { signOutUser } = useAuth()
     return (
         <div>
-            <div className="dark:bg-gray-900 dark:text-white flex justify-between p-4">
+            <div className="dark:bg-gray-900 lg:flex dark:text-white hidden justify-between p-4">
                 <ul className="flex gap-2">
-                    <Button><li><Link className='flex justify-start gap-2' to={'/'}><HomeIcon/>Home</Link></li></Button>
-                    <Button><li><Link className='flex justify-start gap-2' to={'/dashboard/userManagement'}><Users/>User Mangement</Link></li></Button>
-                    <Button><li><Link className='flex justify-start gap-2' to={'/dashboard/petManagement'}><CatIcon/>Pets Mangement</Link></li></Button>
-
-                    <button>Notifications</button>
-                    <button>Logout</button>
+                    <Button><li><Link className='flex justify-start gap-2' to={'/'}><HomeIcon />Home</Link></li></Button>
+                    <Button><li><Link className='flex justify-start gap-2' to={'/dashboard/myCampaignsReport'}><IoCreateSharp />My Campaigns</Link></li></Button>
+                    <Button><li><Link className='flex justify-start gap-2' to={'/dashboard/myDonationReport'}><IoCreateSharp />My Donations</Link></li></Button>
+                    <Button><li><Link className='flex justify-start gap-2' to={'/dashboard/addPet'}><CatIcon />Add Pet</Link></li></Button>
+                    <Button><li><Link className='flex justify-start gap-2' to={'/dashboard/myPets'}><Dog /> My Pet</Link></li></Button>
+                    <Button onClick={signOutUser}>Logout</Button>
                 </ul>
+            </div>
+            <div className='lg:hidden'>
+                <Menubar>
+                    <MenubarMenu>
+                        <MenubarTrigger>
+                        <FaHamburger />
+                        </MenubarTrigger>
+                        <MenubarContent className='dark:bg-gray-600 bg-white'>
+                            <MenubarItem>
+                                <MenubarShortcut>
+                                    <Button className="w-full mb-2"><><Link className='flex justify-start gap-2' to={'/'}><HomeIcon />Home</Link></></Button>
+                                </MenubarShortcut>
+                            </MenubarItem>
+                            <MenubarItem>
+                                <MenubarShortcut>
+                                    <Button className="w-full mb-2"><><Link className='flex justify-start gap-2' to={'/dashboard/myCampaignsReport'}><IoCreateSharp />My Campaigns</Link></></Button>
+                                </MenubarShortcut>
+                            </MenubarItem>
+                            <MenubarItem>
+                                <Button className="w-full mb-2"><><Link className='flex justify-start gap-2' to={'/dashboard/myDonationReport'}><IoCreateSharp />My Donations</Link></></Button>
+                            </MenubarItem>
+                            <MenubarSeparator />
+                            <MenubarItem>
+                                <Button className="w-full mb-2"><><Link className='flex justify-start gap-2' to={'/dashboard/addPet'}><CatIcon />Add Pet</Link></></Button>
+                            </MenubarItem>
+                            <MenubarSeparator />
+                            <MenubarItem>
+                                <Button className="w-full mb-2"><><Link className='flex justify-start gap-2' to={'/dashboard/myPets'}><Dog /> My Pet</Link></></Button>
+                            </MenubarItem>
+                        </MenubarContent>
+                    </MenubarMenu>
+                </Menubar>
             </div>
         </div>
     );

@@ -12,7 +12,7 @@ import toast from 'react-hot-toast';
 const stripePromise = loadStripe(import.meta.env.VITE_PAYMENT_GATEWAY);
 console.log('stripe promise key:', import.meta.env.VITE_PAYMENT_GATEWAY)
 
-const DonateForm = ({ onClose, campaignId }) => {
+const DonateForm = ({ onClose, campaignId, category }) => {
     const { register, handleSubmit, formState: { errors }, setValue } = useForm();
     const [amount, setAmount] = useState('');
     const [loading, setLoading] = useState(false);
@@ -73,7 +73,8 @@ const DonateForm = ({ onClose, campaignId }) => {
             if (paymentIntent.status === "succeeded") {
                 const updateData = {
                     ...payInfo,
-                    transactionId: paymentIntent.id
+                    transactionId: paymentIntent.id, 
+                    petCategory:category
                 }
                 try {
                     const res = await axiosPrivate.post('/update-donation', updateData)

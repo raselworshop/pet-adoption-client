@@ -9,6 +9,7 @@ import AuthProvider from './Providers/AuthProvider/AuthProvider'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import toast, { Toaster } from 'react-hot-toast';
 import FacebookLogin from './Pages/AuthRelated/SocialLogin/FacebookLogin'
+import { SidebarProvider } from './components/components/ui/sidebar';
 
 const notify = () => toast('Here is your toast.');
 
@@ -20,13 +21,15 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <AuthProvider>
       <QueryClientProvider client={queryClient}>
-        <ThemeProvider>
-          <div className='max-w-screen-xl mx-auto'>
-            <RouterProvider router={router} />
-            <FacebookLogin/>
-            <Toaster />
-          </div>
-        </ThemeProvider>
+        <SidebarProvider>
+          <ThemeProvider>
+            <div className='max-w-screen-xl mx-auto'>
+              <RouterProvider router={router} />
+              <FacebookLogin />
+              <Toaster />
+            </div>
+          </ThemeProvider>
+        </SidebarProvider>
       </QueryClientProvider>
     </AuthProvider>
   </StrictMode>,
