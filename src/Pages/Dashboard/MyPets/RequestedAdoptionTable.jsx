@@ -31,7 +31,7 @@ const RequestedAdoptionTable = () => {
 
   const handleCancelRequest = async (requestId) => {
     try {
-      const response = await axiosPrivate.patch(`/adopted/status/${requestId}`, {
+      const response = await axiosPrivate.patch(`/cencell/status/${requestId}`, {
         status: 'Cancelled',
       });
       toast.success(response.data.message || 'Request cancelled successfully!');

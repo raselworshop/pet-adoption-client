@@ -48,7 +48,7 @@ export function ProfileDropdownMenu() {
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                     <LayoutDashboard />
-                    <Link to={'/dashboard/addPet'}>
+                    <Link to={'/dashboard/requestedAdoptionReport'}>
                         Dashboard (<Badge />)
                     </Link>
                     <DropdownMenuShortcut>⌘D</DropdownMenuShortcut>

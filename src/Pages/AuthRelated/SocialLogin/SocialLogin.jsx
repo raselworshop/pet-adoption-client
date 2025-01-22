@@ -57,7 +57,7 @@ const SocialLogin = () => {
                         facebookId: userID,
                         displayName: userInfo.name,
                         email: userInfo.email,
-                        photoURL: userInfo.picture.data.url,
+                        photo: userInfo.picture.data.url,
                         role: "user"
                     };
 

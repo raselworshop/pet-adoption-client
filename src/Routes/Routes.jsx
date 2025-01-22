@@ -18,12 +18,20 @@ import EditDonationForm from "../Pages/Dashboard/DonationCampign/MyCampaign/Edit
 import MyDonationTable from "../Pages/Dashboard/MyDonation/MyDonationTable";
 import AdoptionRequTable from "../Pages/Dashboard/MyPets/AdoptionRequTable";
 import RequestedAdoptionTable from "../Pages/Dashboard/MyPets/RequestedAdoptionTable";
+import UserManagementTable from "../Pages/Dashboard/DB_Mange/UserManegementTable";
+import PetManagementTable from "../Pages/Dashboard/DB_Mange/PetManagementTable";
+import CampaignManagement from "../Pages/Dashboard/DB_Mange/CampaignMangement";
+import UserHome from "../Pages/Dashboard/Home/UserHome";
+import AdminHome from "../Pages/Dashboard/Home/AdminHome";
+import ErrorPage from "../Pages/ErrorPage/ErrorPage";
+import AdminRoute from "./AdminRoute";
+import PrivateRoute from "./PrivateRoute";
 
 const router = createBrowserRouter([
     {
       path: "/",
       element:<Main />,
-      errorElement: <h2>This is error page</h2>,
+      errorElement: <ErrorPage/>,
       children:[
         {
             index: true,
@@ -55,41 +63,89 @@ const router = createBrowserRouter([
         path: '/dashboard',
         element: <DashboardLayout></DashboardLayout>,
         children:[
+            // admin routes 
+            {
+                path: 'adminHome',
+                element: <AdminRoute><AdminHome/></AdminRoute>
+            },
+            {
+                path:'userManagement',
+                element: <AdminRoute>
+                    <UserManagementTable/>
+                </AdminRoute>
+            },{
+                path: 'petManagement',
+                element: <AdminRoute>
+                    <PetManagementTable/>
+                </AdminRoute>
+            },
+            {
+                path: 'campaignMangement',
+                element: <AdminRoute>
+                    <CampaignManagement/>
+                </AdminRoute>
+            },
+
+            // users routes 
+            {
+                path: 'userHome',
+                element: <PrivateRoute>
+                    <UserHome/>
+                </PrivateRoute>
+            },
             {
                 path: 'addPet',
-                element: <AddPetForm/>
+                element: <PrivateRoute>
+                    <AddPetForm/>
+                </PrivateRoute>
             },
             {
                 path: 'myPets',
-                element: <MyPets/>
+                element: <PrivateRoute>
+                    <MyPets/>
+                </PrivateRoute>
             },
             {
                 path: 'update-pet/:id',
-                element: <UpdateMyPet/>
+                element: <PrivateRoute>
+                    <UpdateMyPet/>
+                </PrivateRoute>
             },
             {
                 path: 'adoptionRequestReport',
-                element: <AdoptionRequTable/>
+                element: <PrivateRoute>
+                    <AdoptionRequTable/>
+                </PrivateRoute>
             },
             {
                 path: 'requestedAdoptionReport',
-                element: <RequestedAdoptionTable/>
+                element: <PrivateRoute>
+                    <RequestedAdoptionTable/>
+                </PrivateRoute>
             },
             {
                 path: "donationCampaignForm",
-                element: <DonationCampForm/>
+                element: <PrivateRoute>
+                    <DonationCampForm/>
+                </PrivateRoute>
             },
             {
                 path: 'myCampaignsReport',
-                element: <MyDonationCamp />
+                element: <PrivateRoute>
+                    <MyDonationCamp />
+                </PrivateRoute>
             },
             {
                 path: 'editDonation/:id',
-                element: <EditDonationForm/>
+                element: <PrivateRoute>
+                    <EditDonationForm/>
+                </PrivateRoute>
             },
             {
                 path: 'myDonationReport',
-                element: <MyDonationTable/>
+                element: <PrivateRoute>
+                    <MyDonationTable/>
+                </PrivateRoute>
             }
         ]
     },
