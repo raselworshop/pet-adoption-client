@@ -5,7 +5,7 @@ import Footer from '../Pages/Home/Footer/Footer';
 
 const Main = () => {
     return (
-        <div>
+        <div className='max-w-screen-xl mx-auto'>
             <header>
                 <Navbar />
             </header>

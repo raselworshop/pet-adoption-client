@@ -43,7 +43,7 @@ const Navbar = () => {
     };
 
     return (
-        <header className='md:-mx-4 lg:-mx-10 dark:bg-gray-950 bg-gray-300 fixed top-0 z-50 w-full bg-opacity-80 dark:bg-opacity-80 backdrop-blur-md'>
+        <header className='md:-mx-4 lg:-mx-10 dark:bg-sky-950 bg-gray-300 fixed top-0 z-50 w-full bg-opacity-80 dark:bg-opacity-80 backdrop-blur-md'>
             <nav className="py-4 md:px-5 lg:px-10 flex justify-between items-center">
                 <div className="flex items-center">
                     <div className='w-10 h-10'>
@@ -81,7 +81,7 @@ const Navbar = () => {
                             </NavigationMenuItem>
                             <NavigationMenuItem>
                                 <NavLink
-                                    to="/petListing"
+                                     activeClassName="text-blue-500" to="/petListing"
                                     className="hover:text-blue-500 cursor-pointer"
                                 >
                                     Pet Listing
@@ -89,7 +89,7 @@ const Navbar = () => {
                             </NavigationMenuItem>
                             <NavigationMenuItem>
                                 <NavLink
-                                    to="/donationCampaign"
+                                     activeClassName="text-blue-500" to="/donationCampaign"
                                     className="hover:text-blue-500 cursor-pointer"
                                 >
                                     Donation Campaigns
@@ -98,7 +98,7 @@ const Navbar = () => {
                             {!user && <>
                                 <NavigationMenuItem>
                                     <NavLink
-                                        to="/login"
+                                         activeClassName="text-blue-500" to="/login"
                                         className="hover:text-blue-500 cursor-pointer"
                                     >
                                         Login
@@ -106,7 +106,7 @@ const Navbar = () => {
                                 </NavigationMenuItem>
                                 <NavigationMenuItem>
                                     <NavLink
-                                        to="/register"
+                                         activeClassName="text-blue-500" to="/register"
                                         className="hover:text-blue-500 cursor-pointer"
                                     >
                                         Register

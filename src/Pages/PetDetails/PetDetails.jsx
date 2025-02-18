@@ -3,7 +3,6 @@ import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, Dr
 import { Field, Form, Formik } from 'formik';
 import { useEffect, useState } from 'react';
 import useAuth from '../../Hooks/useAuth';
-import useAxiosPrivate from '../../Hooks/useAxiosPrivate';
 import { Button } from '../../components/components/ui/button';
 import { Separator } from '@/components/components/ui/separator';
 import PhoneInput from 'react-phone-input-2';
@@ -11,28 +10,29 @@ import 'react-phone-input-2/lib/style.css';
 import toast from 'react-hot-toast';
 import { Helmet } from 'react-helmet';
 import useAdoptedPet from '../../Hooks/useAdoptedPet';
+import useAxiosPublic from '../../Hooks/useAxiosPublic';
 
 
 const PetDetails = () => {
     const { user } = useAuth()
     const { id } = useParams();
     const [pet, setPet] = useState(null)
-    const privateAxios = useAxiosPrivate()
+    const axiosPublic = useAxiosPublic()
     const { refetch } = useAdoptedPet()
 
     useEffect(() => {
         const fetchPet = async () => {
             try {
-                const response = await privateAxios.get(`/pets/${id}`)
+                const response = await axiosPublic.get(`/pets/${id}`)
                 // console.log(response.data)
                 setPet(response.data)
             } catch (error) {
-                // console.error('Error fetching pet details:', error);
+                console.error('Error fetching pet details:', error);
                 toast.error('Something is wrong loading pet details')
             }
         }
         fetchPet()
-    }, [id, privateAxios])
+    }, [id, axiosPublic])
 
     const handleSubmit = async (values) => {
         const adoptionData = {

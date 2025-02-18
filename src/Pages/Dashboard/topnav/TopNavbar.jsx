@@ -1,25 +1,23 @@
 import { Button } from '@/components/components/ui/button';
 import { MenubarShortcut } from '@/components/components/ui/menubar';
 import { Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarSeparator, MenubarTrigger } from '@radix-ui/react-menubar';
-import { CatIcon, Dog, HomeIcon, Users } from 'lucide-react';
+import { CatIcon, Dog, HomeIcon, LogOutIcon, Users } from 'lucide-react';
 import React from 'react';
 import { IoCreateSharp } from 'react-icons/io5';
 import { Link } from 'react-router-dom';
 import { FaHamburger } from "react-icons/fa";
-import useAuth from '../../../Hooks/useAuth';
 
 const TopNavbar = () => {
-    const { signOutUser } = useAuth()
+    
     return (
         <div>
             <div className="dark:bg-gray-900 lg:flex dark:text-white hidden justify-between p-4">
                 <ul className="flex gap-2">
-                    <Button><li><Link className='flex justify-start gap-2' to={'/'}><HomeIcon />Home</Link></li></Button>
-                    <Button><li><Link className='flex justify-start gap-2' to={'/dashboard/myCampaignsReport'}><IoCreateSharp />My Campaigns</Link></li></Button>
-                    <Button><li><Link className='flex justify-start gap-2' to={'/dashboard/myDonationReport'}><IoCreateSharp />My Donations</Link></li></Button>
-                    <Button><li><Link className='flex justify-start gap-2' to={'/dashboard/addPet'}><CatIcon />Add Pet</Link></li></Button>
-                    <Button><li><Link className='flex justify-start gap-2' to={'/dashboard/myPets'}><Dog /> My Pet</Link></li></Button>
-                    <Button onClick={signOutUser}>Logout</Button>
+                    <><li className='border-r-2  hover:text-blue-700'><Link className='flex justify-start gap-2' to={'/'}><HomeIcon />Home</Link></li></>
+                    <><li className='border-r-2  hover:text-blue-700'><Link className='flex justify-start gap-2' to={'/dashboard/myCampaignsReport'}><IoCreateSharp className='text-2xl' />My Campaigns</Link></li></>
+                    <><li className='border-r-2  hover:text-blue-700'><Link className='flex justify-start gap-2' to={'/dashboard/myDonationReport'}><IoCreateSharp className='text-2xl' />My Donations</Link></li></>
+                    <><li className='border-r-2  hover:text-blue-700'><Link className='flex justify-start gap-2' to={'/dashboard/addPet'}><CatIcon />Add Pet</Link></li></>
+                    <><li className='border-r-2  hover:text-blue-700'><Link className='flex justify-start gap-2' to={'/dashboard/myPets'}><Dog /> My Pet</Link></li></>
                 </ul>
             </div>
             <div className='lg:hidden'>

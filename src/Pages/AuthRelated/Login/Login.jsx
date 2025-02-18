@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup'; // For validation schema
 import signinLottie from '../../../assets/lottie/signin.json'
@@ -48,8 +48,13 @@ const Login = () => {
                 }
             })
             .catch(error => toast.error(error.message))
-        setSubmitting(false);
+            .finally(() => setSubmitting(false));
     };
+
+    useEffect(() => {
+        document.getElementById('email')?.focus();
+    }, []);
+    
 
     const handleNavigate = () => {
         navigate('/reset-password')
@@ -105,7 +110,7 @@ const Login = () => {
                                         <Field
                                             type="password"
                                             id="password"
-                                            autoComplete="password"
+                                            autoComplete="current-password"
                                             name="password"
                                             className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 dark:text-white dark:bg-gray-600"
                                         />

@@ -23,7 +23,7 @@ createRoot(document.getElementById('root')).render(
       <QueryClientProvider client={queryClient}>
         <SidebarProvider>
           <ThemeProvider>
-            <div className='max-w-screen-xl mx-auto'>
+            <div className='w-full'>
               <RouterProvider router={router} />
               <FacebookLogin />
               <Toaster />

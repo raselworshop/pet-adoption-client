@@ -1,52 +1,38 @@
-import React from 'react';
-import { Outlet } from 'react-router-dom';
-import SideNavbar from '../Pages/Dashboard/SideNavbar/SideNavbar';
-import ToggleMode from '../Providers/Toggle/ToggleMode';
-import TopNavbar from '../Pages/Dashboard/topnav/TopNavbar';
-import { SidebarProvider, SidebarTrigger, useSidebar } from '@/components/components/ui/sidebar';
+import React from "react";
+import { Outlet } from "react-router-dom";
+import SideNavbar from "../Pages/Dashboard/SideNavbar/SideNavbar";
+import ToggleMode from "../Providers/Toggle/ToggleMode";
+import TopNavbar from "../Pages/Dashboard/topnav/TopNavbar";
+import { SidebarTrigger, useSidebar } from "@/components/components/ui/sidebar";
+import useAuth from "../Hooks/useAuth";
 
 const DashboardLayout = () => {
-    const { isOpen } = useSidebar(); 
+  const { isOpen } = useSidebar();
+  const { user } = useAuth();
 
-    return (
-       
-            <div className="min-h-screen flex flex-col dark:bg-gray-800 bg-gray-200">
-                {/* Top Navbar */}
-                <header className="flex justify-between py-5 px-5 lg:px-10 dark:bg-gray-900 bg-gray-300 shadow-md">
-                    <h2 className="text-3xl font-semibold text-gray-800 dark:text-gray-200">
-                        Dashboard
-                    </h2>
-                    <div className="flex items-center gap-5">
-                        <TopNavbar />
-                        <ToggleMode />
-                    </div>
-                </header>
-
-                {/* Main Layout */}
-                <div className="flex relative">
-                    {/* Sidebar */}
-                    <aside
-                        className={`flex h-full bg-gray-800 text-white shadow-lg transform transition-transform duration-300 ${
-                            isOpen ? 'translate-x-full' : ''
-                        }`}
-                         // Fixed width for the sidebar
-                    >
-                        <SideNavbar />
-                    </aside>
-
-                    {/* Sidebar Trigger */}
-
-                    {/* Main Content */}
-                    <div className="absolute right-0">
-                        <SidebarTrigger />
-                    </div>
-                    <main className="flex-1 p-5 dark:text-gray-200 text-gray-800">
-                        <Outlet />
-                    </main>
-                </div>
-            </div>
-    
-    );
+  return (
+    <div className="w-full flex dark:bg-gray-900 bg-gray-200">
+      <div className="flex">
+        <SideNavbar className="bg-sky-800" />
+        <SidebarTrigger className="" />
+      </div>
+      <div className="w-full">
+        <div className="flex items-center justify-evenly dark:bg-gray-900 bg-gray-300">
+          <h2 className="text-3xl font-semibold text-gray-800 dark:text-gray-200">
+            Dashboard
+          </h2>
+          <div className="flex items-center">
+            <TopNavbar />
+            <ToggleMode />
+          </div>
+          <div className="w-10 h-10">
+            <img src={user?.photoURL} alt="user" />
+          </div>
+        </div>
+        <Outlet />
+      </div>
+    </div>
+  );
 };
 
 export default DashboardLayout;
