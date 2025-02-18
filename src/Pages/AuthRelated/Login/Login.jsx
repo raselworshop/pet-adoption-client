@@ -11,6 +11,7 @@ import useAuth from '../../../Hooks/useAuth';
 import toast from 'react-hot-toast';
 import cat from '../../../assets/lottie/cat.json'
 import { Helmet } from 'react-helmet';
+import DemoLogin from './demoLogin';
 
 const Login = () => {
     const navigate = useNavigate()
@@ -144,6 +145,7 @@ const Login = () => {
                                         </button>
                                         <DropdownMenuSeparator />
                                     </div>
+                                    <DemoLogin userSignIn={userSignIn}/>
                                 </Form>
                             )}
                         </Formik>

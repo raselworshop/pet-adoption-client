@@ -81,7 +81,7 @@ const Navbar = () => {
                             </NavigationMenuItem>
                             <NavigationMenuItem>
                                 <NavLink
-                                     activeClassName="text-blue-500" to="/petListing"
+                                     activeclassname="text-blue-500" to="/petListing"
                                     className="hover:text-blue-500 cursor-pointer"
                                 >
                                     Pet Listing
@@ -89,7 +89,7 @@ const Navbar = () => {
                             </NavigationMenuItem>
                             <NavigationMenuItem>
                                 <NavLink
-                                     activeClassName="text-blue-500" to="/donationCampaign"
+                                     activeclassname="text-blue-500" to="/donationCampaign"
                                     className="hover:text-blue-500 cursor-pointer"
                                 >
                                     Donation Campaigns
@@ -98,7 +98,7 @@ const Navbar = () => {
                             {!user && <>
                                 <NavigationMenuItem>
                                     <NavLink
-                                         activeClassName="text-blue-500" to="/login"
+                                         activeclassname="text-blue-500" to="/login"
                                         className="hover:text-blue-500 cursor-pointer"
                                     >
                                         Login
@@ -106,7 +106,7 @@ const Navbar = () => {
                                 </NavigationMenuItem>
                                 <NavigationMenuItem>
                                     <NavLink
-                                         activeClassName="text-blue-500" to="/register"
+                                         activeclassname="text-blue-500" to="/register"
                                         className="hover:text-blue-500 cursor-pointer"
                                     >
                                         Register

@@ -80,7 +80,7 @@ const AddPetForm = () => {
     }
   };
 
-  if (!user || !user.email || !user.displayName) {
+  if (!user || !user.email) {
     return <div>Please log in to access this form.</div>;
   }
 
