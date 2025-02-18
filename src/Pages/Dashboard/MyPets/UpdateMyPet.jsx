@@ -112,7 +112,7 @@ const UpdateMyPet = () => {
       }
       if (user && user.email) {
         const res = await axiosPrivate.put(`/my-pets/${id}`, petData);
-        console.log(res.data)
+        // console.log(res.data)
         if (res.data.result.modifiedCount === 1) {
           toast.success("Pet upadted successfully!");
           refetch();
@@ -121,7 +121,7 @@ const UpdateMyPet = () => {
         return toast.error("Please login first");
       }
     } catch (error) {
-      console.log(error)
+      // console.log(error)
       setErrors({ submit: "Failed to update pet. Please try again." });
     } finally {
       setSubmitting(false);

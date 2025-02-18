@@ -10,7 +10,6 @@ import toast from 'react-hot-toast';
 
 // Stripe Promise
 const stripePromise = loadStripe(import.meta.env.VITE_PAYMENT_GATEWAY);
-// console.log('stripe promise key:', import.meta.env.VITE_PAYMENT_GATEWAY)
 
 const DonateForm = ({ onClose, campaignId, category }) => {
     const { register, handleSubmit, formState: { errors }, setValue } = useForm();
@@ -18,47 +17,48 @@ const DonateForm = ({ onClose, campaignId, category }) => {
     const [loading, setLoading] = useState(false);
     const stripe = useStripe();
     const elements = useElements();
-    const { user } = useAuth()
-    const axiosPrivate = useAxiosPrivate()
+    const { user } = useAuth();
+    const axiosPrivate = useAxiosPrivate();
 
     const onSubmit = async (data) => {
-        setLoading(true)
+        setLoading(true);
         const { amount, donorName, donorEmail } = data;
 
         if (!stripe || !elements) {
-            // console.error("Stripe.js has not loaded yet.");
+            toast.error('Stripe.js has not loaded yet.');
             return;
         }
 
         const cardElement = elements.getElement(CardElement);
-        if (cardElement === null) {
-            return
+        if (!cardElement) {
+            toast.error('Card element not found!');
+            return;
         }
 
         const { error, paymentMethod } = await stripe.createPaymentMethod({
-            type: "card",
+            type: 'card',
             card: cardElement
-        })
+        });
 
         if (error) {
-            // console.log('payment error', error)
-            toast.error('Some thing is wrong!')
+            toast.error(`Payment error: ${error.message}`);
+            setLoading(false);
+            return;
         } else {
-            // console.log('payment method', paymentMethod)
-            toast.success('Procces successful')
+            toast.success('Payment method created successfully.');
         }
 
         const payInfo = {
-            campaignId, amount, donorName, donorEmail, userEmail: user?.email
-        }
-        // console.table(payInfo)
+            campaignId,
+            amount,
+            donorName,
+            donorEmail,
+            userEmail: user?.email
+        };
 
         try {
-            const { data } = await axiosPrivate.post('/create-payment-intent', payInfo)
-            // console.log("client secret: ", data)
-
-            // confirm payment 
-            const { paymentIntent, error } = await stripe.confirmCardPayment(data.clientSecret, {
+            const { data } = await axiosPrivate.post('/create-payment-intent', payInfo);
+            const { paymentIntent, error: confirmError } = await stripe.confirmCardPayment(data.clientSecret, {
                 payment_method: {
                     card: cardElement,
                     billing_details: {
@@ -66,42 +66,40 @@ const DonateForm = ({ onClose, campaignId, category }) => {
                         name: user?.displayName || donorName
                     }
                 }
-            })
-            if (error) {
-                // console.log("from payment intent", error)
-                toast.error(error.message)
+            });
+
+            if (confirmError) {
+                toast.error(`Payment confirmation failed: ${confirmError.message}`);
+                setLoading(false);
+                return;
             }
-            // console.log("payment intent success", paymentIntent)
-            if (paymentIntent.status === "succeeded") {
+
+            if (paymentIntent.status === 'succeeded') {
                 const updateData = {
                     ...payInfo,
-                    transactionId: paymentIntent.id, 
-                    petCategory:category
-                }
+                    transactionId: paymentIntent.id,
+                    petCategory: category
+                };
+
                 try {
-                    const res = await axiosPrivate.post('/update-donation', updateData)
-                    // console.log('backend updated res: ', res.data)
-                    toast.success(`your donation has been successfull! 
-                        TSX: ${paymentIntent.id}
-                        `)
-                } catch (error) {
-                    // console.error("Error updating transaction in backend:", updateError);
-                    toast.error("Failed to update donation record.");
+                    const res = await axiosPrivate.post('/update-donation', updateData);
+                    toast.success(`Your donation was successful! TXN ID: ${paymentIntent.id}`);
+                    setLoading(false);
+                } catch (updateError) {
+                    toast.error(`Failed to update donation record: ${updateError.message}`);
+                    setLoading(false);
                 }
             }
-            setLoading(false)
         } catch (error) {
-            setLoading(false)
-            // console.error('Payment Intent creation failed:', error)
-            toast.error('Making succesfull payment Error')
+            toast.error('Error creating payment intent.');
+            setLoading(false);
         }
-
     };
 
     return (
-        <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex justify-center items-center">
-            <div className="dark:bg-white/60 bg-white p-6 rounded shadow-lg w-96">
-                <h2 className="text-lg font-bold mb-4">Enter Donation Amount</h2>
+        <div className="fixed inset-0 bg-gray-800 bg-opacity-5 flex justify-center items-center">
+            <div className="dark:bg-white/90 dark:text-black bg-white p-6 rounded shadow-lg w-96">
+                <h2 className="text-lg font-bold mb-4">Enter Donation Details</h2>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="mb-4">
                         <label htmlFor="amount" className="block text-sm font-semibold mb-2">Amount</label>
@@ -110,7 +108,11 @@ const DonateForm = ({ onClose, campaignId, category }) => {
                             id="amount"
                             placeholder="Enter amount"
                             value={amount}
-                            {...register('amount', { required: 'Amount is required', min: { value: 1, message: 'Amount must be at least $1' }, validate: value => value > 0 || 'Amount must be a positive number' })}
+                            {...register('amount', {
+                                required: 'Amount is required',
+                                min: { value: 1, message: 'Amount must be at least $1' },
+                                validate: value => value > 0 || 'Amount must be a positive number'
+                            })}
                             onChange={(e) => {
                                 setAmount(e.target.value);
                                 setValue('amount', e.target.value);
@@ -125,6 +127,7 @@ const DonateForm = ({ onClose, campaignId, category }) => {
                         <input
                             type="text"
                             id="donorName"
+                            defaultValue={user.displayName || "Anonymous"}
                             placeholder="Enter your name"
                             {...register('donorName', { required: 'Name is required' })}
                             className="border rounded w-full p-2 dark:bg-white/5"
@@ -137,6 +140,7 @@ const DonateForm = ({ onClose, campaignId, category }) => {
                         <input
                             type="email"
                             id="donorEmail"
+                            defaultValue={user.email || "anonymous@mail.com"}
                             placeholder="Enter your email"
                             {...register('donorEmail', { required: 'Email is required' })}
                             className="border rounded w-full p-2 dark:bg-white/5"
@@ -148,13 +152,17 @@ const DonateForm = ({ onClose, campaignId, category }) => {
                         <CardElement className="border rounded p-2" />
                     </div>
 
-                    {loading ? <ButtonLoading /> : <Button
-                        type="submit"
-                        className=" px-4 py-2 rounded w-full"
-                        disabled={!stripe || !amount || parseFloat(amount) <= 0}
-                    >
-                        Donate
-                    </Button>}
+                    {loading ? (
+                        <ButtonLoading />
+                    ) : (
+                        <Button
+                            type="submit"
+                            className="px-4 py-2 rounded w-full"
+                            disabled={!stripe || !amount || parseFloat(amount) <= 0}
+                        >
+                            Donate
+                        </Button>
+                    )}
                 </form>
 
                 <Button

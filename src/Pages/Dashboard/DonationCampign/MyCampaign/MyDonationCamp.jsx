@@ -20,15 +20,15 @@ const MyDonationCamp = () => {
         const fetchCamp = async () => {
             setLoading(true)
             try {
-                const { data } = await axiosPrivate.get(`/my-donation-campaigns/${user?.email}`)
-                // console.log(data)
+                const { data } = await axiosPrivate.get(`/donors/campaigns/${user?.email}` || `/my-donation-campaigns/${user?.email}`)
+                console.log(data)
                 const campaignsData = data.map(campaign => ({
                     ...campaign,
                     isPaused: campaign.isPaused ?? false
                 }));
                 setCampaigns(campaignsData)
             } catch (error) {
-                // console.error("Error frtching campaign data", error)
+                console.error("Error frtching campaign data", error)
             }
         }
         fetchCamp();

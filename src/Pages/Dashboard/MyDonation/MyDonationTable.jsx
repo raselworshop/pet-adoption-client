@@ -13,8 +13,8 @@ const MyDonationTable = () => {
     const queryClient = useQueryClient()
 
     const fetchUserDonation = async (email) => {
-        const { data } = await axiosPrivate.get(`/donors/campaigns?email=${email}`)
-        // console.log(data)
+        const { data } = await axiosPrivate.get(`/my-donation-campaigns/${email}`)
+        console.log(data)
         return data
     }
 
@@ -52,10 +52,10 @@ const MyDonationTable = () => {
             header: 'Pet Name'
         },
         {
-            accessorKey: 'amount',
+            accessorKey: 'donatedAmount',
             header: 'Donated Amount',
             cell: ({ row }) => {
-                const amount = row.getValue('amount');
+                const amount = row.getValue('donatedAmount');
                 return `$${amount}`;
             },
         },
