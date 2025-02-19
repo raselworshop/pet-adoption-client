@@ -9,6 +9,7 @@ import useCloudinary from '../../../Hooks/useCloudinary';
 import * as Yup from 'yup';
 import useAxiosPrivate from '../../../Hooks/useAxiosPrivate';
 import useAuth from '../../../Hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
 
 const DonationCampForm = () => {
     const { uploadImage, uploading, error } = useCloudinary()
@@ -16,6 +17,7 @@ const DonationCampForm = () => {
     const [longDescription, setLongDescription] = useState('')
     const axiosPrivate = useAxiosPrivate()
     const { user } = useAuth()
+    const navigate = useNavigate()
 
     const initialValues = {
         petName: '',
@@ -80,6 +82,7 @@ const DonationCampForm = () => {
             // console.log(data)
             if (data.status === 201 || data.status === 200 || data.insertedId) {
                 toast.success("Donation campaign created successfully")
+                navigate("/dashboard/myCampaignsReport")
             }
         } catch (error) {
             // console.log('check error post a camp', error)
@@ -94,76 +97,67 @@ const DonationCampForm = () => {
     }
 
     return (
-        <div>
+        <div className="mx-auto bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg">
             <Helmet><title>PA || Create Donation Campaign</title></Helmet>
             <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}
-                onSubmit={handleSubmit}>
+                onSubmit={handleSubmit}
+            >
                 {({ setFieldValue, isSubmitting }) => (
-                    <div>
-                        <h2 className='text-3xl font-semibold mb-6'>Create Donation Campaign</h2>
-                        <Form>
-                            <div>
-                                <label htmlFor="petName">Pet Name</label>
-                                <Field className="dark:bg-gray-700 border m-2" type="text" name="petName" />
-                                <ErrorMessage className='text-red-500 text-sm' name="petName" component="div" />
+                    <Form className="space-y-6">
+                        <h2 className='text-3xl font-semibold text-gray-900 dark:text-white mb-4 text-center'>Create Donation Campaign</h2>
+                        
+                        <div className="space-y-2">
+                            <label htmlFor="petName" className="block font-medium text-gray-700 dark:text-gray-300">Pet Name</label>
+                            <Field className="w-full p-2 border rounded-lg dark:bg-gray-700 dark:text-white" type="text" name="petName" />
+                            <ErrorMessage className='text-red-500 text-sm' name="petName" component="div" />
+                        </div>
+
+                        <div className="space-y-2">
+                            <label htmlFor="petImage" className="block font-medium text-gray-700 dark:text-gray-300">Pet Picture</label>
+                            <input className="w-full p-2 border rounded-lg dark:bg-gray-700 dark:text-white" type="file" name="petImage" accept="image/*" onChange={(e) => handleImageUpload(e, setFieldValue)} />
+                            <ErrorMessage className='text-red-500 text-sm' name="petImage" component="div" />
+                            {uploading && <ButtonLoading />}
+                        </div>
+
+                        <div className="space-y-2">
+                            <label htmlFor="maxDonation" className="block font-medium text-gray-700 dark:text-gray-300">Maximum Donation Amount</label>
+                            <Field className="w-full p-2 border rounded-lg dark:bg-gray-700 dark:text-white" type="number" name="maxDonation" />
+                            <ErrorMessage className='text-red-500 text-sm' name="maxDonation" component="div" />
+                        </div>
+
+                        <div className="space-y-2">
+                            <label htmlFor="lastDate" className="block font-medium text-gray-700 dark:text-gray-300">Last Date of Donation</label>
+                            <Field className="w-full p-2 border rounded-lg dark:bg-gray-700 dark:text-white" type="date" name="lastDate" />
+                            <ErrorMessage className='text-red-500 text-sm' name="lastDate" component="div" />
+                        </div>
+
+                        <div className="space-y-2">
+                            <label htmlFor="shortDescription" className="block font-medium text-gray-700 dark:text-gray-300">Short Description</label>
+                            <Field className="w-full p-2 border rounded-lg dark:bg-gray-700 dark:text-white" type="text" name="shortDescription" />
+                            <ErrorMessage className='text-red-500 text-sm' name="shortDescription" component="div" />
+                        </div>
+
+                        <div className="space-y-2">
+                            <label htmlFor="longDescription" className="block font-medium text-gray-700 dark:text-gray-300">Long Description</label>
+                            <ReactQuill className="bg-white dark:bg-gray-700 rounded-lg p-2" value={longDescription} onChange={(value) => {
+                                setLongDescription(value);
+                                setFieldValue('longDescription', value);
+                            }} />
+                            <ErrorMessage className='text-red-500 text-sm' name="longDescription" component="div" />
+                        </div>
+
+                        <div className="flex justify-center">
+                            <Button className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700" type="submit" disabled={isSubmitting}>Submit</Button>
+                        </div>
+
+                        {campaignImageUrl && (
+                            <div className="flex justify-center mt-4">
+                                <img src={campaignImageUrl} alt="Campaign Preview" className="w-64 h-48 rounded-lg shadow-md" />
                             </div>
-                            <div>
-                                <label htmlFor="petImage">Pet Picture</label>
-                                <input
-                                    className="m-2"
-                                    type="file"
-                                    name="petImage"
-                                    accept="image/*"
-                                    onChange={(e) => handleImageUpload(e, setFieldValue)} />
-                                <ErrorMessage className='text-red-500 text-sm' name="petImage" component="div" />
-                                {uploading && <ButtonLoading />}
-                            </div>
-                            <div>
-                                <label htmlFor="maxDonation">Maximum Donation Amount</label>
-                                <Field
-                                    className="dark:bg-gray-700 border m-2"
-                                    type="text" name="maxDonation" />
-                                <ErrorMessage className='text-red-500 text-sm' name="maxDonation" component="div" />
-                            </div>
-                            <div>
-                                <label htmlFor="lastDate">Last Date of Donation</label>
-                                <Field
-                                    className="dark:bg-gray-700 border m-2"
-                                    type="date" name="lastDate" />
-                                <ErrorMessage className='text-red-500 text-sm' name="lastDate" component="div" />
-                            </div>
-                            <div className='my-2 flex flex-col'>
-                                <div>
-                                    <label htmlFor="shortDescription">Short Description</label>
-                                    <Field
-                                        className="dark:bg-gray-700 border m-2"
-                                        type="text" name="shortDescription" />
-                                </div>
-                                <ErrorMessage className='text-red-500 text-sm' name="shortDescription" component="div" />
-                            </div>
-                            <div className='my-2'>
-                                <label htmlFor="longDescription">Long Description</label>
-                                <ReactQuill
-                                    className="m-2"
-                                    value={longDescription}
-                                    onChange={(value) => {
-                                        setLongDescription(value);
-                                        setFieldValue('longDescription', value);
-                                    }} />
-                                <ErrorMessage className='text-red-500 text-sm' name="longDescription" component="div" />
-                            </div>
-                            <Button className="my-2" type="submit" disabled={isSubmitting}> Submit </Button>
-                            <ErrorMessage className='text-red-500 text-sm' name="submit" component="div" />
-                            {campaignImageUrl && (
-                                <div className="flex">
-                                    <img src={campaignImageUrl} alt="Campaign Preview"
-                                        style={{ width: '250px', height: '200px', marginTop: '10px' }} />
-                                </div>
-                            )}
-                        </Form>
-                    </div>
+                        )}
+                    </Form>
                 )}
             </Formik>
         </div>

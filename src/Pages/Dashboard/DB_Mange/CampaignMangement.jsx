@@ -23,7 +23,7 @@ const CampaignManagement = () => {
                     ...campaign,
                     isPaused: campaign.isPaused ?? false
                 }));
-                // console.log(campaignsData)
+                console.log(campaignsData)
                 setCampaigns(campaignsData);
             } catch (error) {
                 // console.error("Error fetching campaign data", error);
@@ -77,11 +77,11 @@ const CampaignManagement = () => {
 
     const columns = useMemo(() => [
         {
-            accessorKey: 'title',
+            accessorKey: 'petName',
             header: 'Title'
         },
         {
-            accessorKey: 'description',
+            accessorKey: 'shortDescription',
             header: 'Description'
         },
         {

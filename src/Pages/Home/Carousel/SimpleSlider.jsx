@@ -26,9 +26,11 @@ const SimpleSlider = () => {
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 4000,
+    autoplaySpeed: 5000,
+    lazyLoad: "progressive",
     pauseOnHover: true,
     pauseOnFocus: true,
+    fade: true,
     pauseOnDotsHover: true,
     cssEase: "ease-in-out",
   };
@@ -36,7 +38,7 @@ const SimpleSlider = () => {
   return (
     <Slider {...settings}>
       {slides.map((slide, index) => (
-        <div key={index} className="relative w-full h-[80vh] overflow-hidden">
+        <div key={index} className="relative w-full h-[70vh] overflow-hidden">
           <img src={slide.src} alt={`Slide ${index + 1}`} className="w-full h-full object-cover" />
           <div className="absolute inset-0 flex items-center justify-center text-white text-center p-4 bg-black bg-opacity-50">
             <h3 className="p-4 rounded-md text-lg md:text-2xl">{slide.caption}</h3>
