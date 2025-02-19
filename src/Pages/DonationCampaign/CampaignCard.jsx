@@ -3,7 +3,7 @@ import { Button } from "../../components/components/ui/button";
 import { useNavigate } from "react-router-dom";
 
 const CampaignCard = ({ campaign }) => {
-  console.log(campaign)
+  console.log(campaign);
   const { _id, petName, petImage, maxDonation, donatedAmount } = campaign;
   const navigate = useNavigate();
 
@@ -11,12 +11,12 @@ const CampaignCard = ({ campaign }) => {
     navigate(`/campDetails/${id}`);
   };
 
-  // ডোনেশন প্রোগ্রেস ক্যালকুলেশন
-  const donationProgress = Math.min(( donatedAmount / maxDonation ) * 100, 100);
+  // donation progress
+  const donationProgress = Math.min((donatedAmount / maxDonation) * 100, 100);
   const isFullyFunded = donatedAmount >= maxDonation;
 
   return (
-    <div className="border rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 p-4">
+    <div className="border rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 p-4 flex flex-col min-h-[350px]">
       {/* Pet Image */}
       <div className="relative">
         <img
@@ -34,29 +34,34 @@ const CampaignCard = ({ campaign }) => {
       {/* Pet Name */}
       <h2 className="text-xl font-bold mb-2">{petName}</h2>
 
-      {/* Donation Progress */}
-      <div className="mb-3">
-        <p className="text-sm dark:text-white text-gray-600">Donated: ${donatedAmount} / ${maxDonation}</p>
-        <div className="w-full h-2 dark:bg-gray-800 bg-gray-300 rounded-full overflow-hidden mt-1">
-          <div
-            className="h-full bg-green-500 transition-all duration-500"
-            style={{ width: `${donationProgress}%` }}
-          ></div>
+      {/* Progress Bar + Button Wrapper */}
+      <div className="mt-auto">
+        {/* Donation Progress */}
+        <div className="mb-3">
+          <p className="text-sm dark:text-white text-gray-600">
+            Donated: ${donatedAmount} / ${maxDonation}
+          </p>
+          <div className="w-full h-2 dark:bg-gray-800 bg-gray-300 rounded-full overflow-hidden mt-1">
+            <div
+              className="h-full bg-green-500 transition-all duration-500"
+              style={{ width: `${donationProgress}%` }}
+            ></div>
+          </div>
         </div>
-      </div>
 
-      {/* View Details Button */}
-      <Button
-        onClick={() => handleDetails(_id)}
-        disabled={isFullyFunded}
-        className={`w-full px-4 py-2 rounded mt-4 text-white ${
-          isFullyFunded
-            ? "bg-gray-400 cursor-not-allowed"
-            : "bg-blue-600 hover:bg-blue-700 transition-all"
-        }`}
-      >
-        {isFullyFunded ? "Campaign Completed" : "View Details"}
-      </Button>
+        {/* View Details Button */}
+        <Button
+          onClick={() => handleDetails(_id)}
+          disabled={isFullyFunded}
+          className={`w-full px-4 py-2 rounded text-white ${
+            isFullyFunded
+              ? "bg-gray-400 cursor-not-allowed"
+              : "bg-blue-600 hover:bg-blue-700 transition-all"
+          }`}
+        >
+          {isFullyFunded ? "Campaign Completed" : "View Details"}
+        </Button>
+      </div>
     </div>
   );
 };

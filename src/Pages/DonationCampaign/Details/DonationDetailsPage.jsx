@@ -32,7 +32,7 @@ const DonationDetailsPage = () => {
     queryKey: ['recomendedCamp'],
     queryFn: fetchRecomCamp,
   });
-
+ console.log({campDetails})
   if (detailsLoading || recomLoading) return <ButtonLoading />;
 
   const donationProgress = Math.min((campDetails.donatedAmount / campDetails.maxDonation) * 100, 100);

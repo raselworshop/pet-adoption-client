@@ -51,7 +51,7 @@ export function ProfileDropdownMenu() {
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                     <LayoutDashboard />
-                    <Link to={user?.isAdmin ? '/dashboard/adminHome' : '/dashboard/userHome' }>
+                    <Link to={user.isAdmin ? '/dashboard/adminHome' : '/dashboard/userHome' }>
                         Dashboard (<Badge />)
                     </Link>
                     <DropdownMenuShortcut>⌘D</DropdownMenuShortcut>

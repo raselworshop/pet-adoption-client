@@ -19,7 +19,7 @@ const UserHome = () => {
   const [loading, setLoading] = useState(false)
 
   const handleUpdate =async () => {
-    console.log("Updated Info:", { name, email, photo });
+    // console.log("Updated Info:", { name, email, photo });
     if(!user) return;
     try {
         setLoading(true)
