@@ -14,7 +14,7 @@ const MyDonationTable = () => {
 
     const fetchUserDonation = async (email) => {
         const { data } = await axiosPrivate.get(`/my-donation-campaigns/${email}`)
-        console.log(data)
+        // console.log(data)
         return data
     }
 

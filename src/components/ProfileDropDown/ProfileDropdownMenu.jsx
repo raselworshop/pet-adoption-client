@@ -30,25 +30,28 @@ export function ProfileDropdownMenu() {
             toast.success("You're logged out succesfull")
         })
     }
+    const enactiveButtonClik=()=>{
+        toast.success("This feature is on the way")
+    }
     return (
         <>
         {user && <DropdownMenuContent className="w-56">
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={enactiveButtonClik}>
                     <User />
                     <span>Profile</span>
                     <DropdownMenuShortcut>{user?.email}</DropdownMenuShortcut>
                 </DropdownMenuItem>
-                <DropdownMenuItem>
+                <DropdownMenuItem  onClick={enactiveButtonClik}>
                     <CreditCard />
                     <span>My Donation</span>
                     <DropdownMenuShortcut>⌘MD</DropdownMenuShortcut>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                     <LayoutDashboard />
-                    <Link to={'/dashboard/requestedAdoptionReport'}>
+                    <Link to={user?.isAdmin ? '/dashboard/adminHome' : '/dashboard/userHome' }>
                         Dashboard (<Badge />)
                     </Link>
                     <DropdownMenuShortcut>⌘D</DropdownMenuShortcut>
@@ -61,7 +64,7 @@ export function ProfileDropdownMenu() {
                     <span>GitHub</span>
                 </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={enactiveButtonClik}>
                 <LifeBuoy />
                 <span>Support</span>
             </DropdownMenuItem>
@@ -72,7 +75,7 @@ export function ProfileDropdownMenu() {
             <DropdownMenuSeparator />
             <DropdownMenuItem>
                 <LogOut />
-                <span onClick={handleSignOut}>Log out</span>
+                <button onClick={handleSignOut}>Log out</button>
                 <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
             </DropdownMenuItem>
         </DropdownMenuContent>}

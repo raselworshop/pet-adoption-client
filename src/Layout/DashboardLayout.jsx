@@ -31,7 +31,7 @@ const DashboardLayout = () => {
               <ToggleMode />
             </div>
             <div className="w-10 h-10">
-              <img src={user?.photoURL} alt="user" className="rounded-full" />
+              <img src={user?.photoURL} alt="user" className="w-full h-full rounded-full" />
             </div>
           </div>
         </div>

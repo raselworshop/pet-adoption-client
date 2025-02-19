@@ -29,7 +29,7 @@ const MyDonationCamp = () => {
         const { data } = await axiosPrivate.get(
           `/my-donation-campaigns/${user?.email}`
         );
-        console.log(data);
+        // console.log(data);
         const campaignsData = data.map((campaign) => ({
           ...campaign,
           isPaused: campaign.isPaused ?? false,

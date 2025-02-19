@@ -20,8 +20,8 @@ const style = {
 
 const MyDonationsChart = () => {
   return (
-    <div className="py-4 w-2/4 bg-white/80 rounded-lg shadow-md">
-      <h2 className="text-xl font-semibold mb-4">Donations Chart</h2>
+    <div className="py-4 w-full md:w-2/4 bg-white/80 rounded-lg shadow-md">
+      <h2 className="text-xl font-semibold mb-4 ml-4">Donations Chart</h2>
       <ResponsiveContainer width="100%" height={300}>
         <RadialBarChart cx="50%" cy="50%" innerRadius="10%" outerRadius="80%" barSize={10} data={data}>
           <RadialBar minAngle={15} label={{ position: "insideStart", fill: "#fff" }} background clockWise dataKey="uv" />
