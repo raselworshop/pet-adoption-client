@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import useAxiosPrivate from '../../../Hooks/useAxiosPrivate';
 import { CatIcon, DogIcon, DollarSignIcon, Users } from 'lucide-react';
 import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, ResponsiveContainer, PieChart, Pie, Legend } from 'recharts';
+import BarChartComponent from './adminCharts/interactivity';
 
 const colors = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', 'red', 'pink'];
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
@@ -14,7 +15,7 @@ const AdminHome = () => {
     const { user } = useAuth()
     const axiosPrivate = useAxiosPrivate()
 
-    const { data: stats = {} } = useQuery({
+    const { data: stats = {}, isLoading: isStatsLoading } = useQuery({
         queryKey: ['admin-stats'],
         queryFn: async () => {
             const res = await axiosPrivate.get('/admin-analytics')
@@ -44,6 +45,7 @@ const AdminHome = () => {
         return <path d={getPath(x, y, width, height)} stroke="none" fill={fill} />;
     };
 
+    const RADIAN = Math.PI / 180;
     const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
         const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
         const x = cx + radius * Math.cos(-midAngle * RADIAN);
@@ -61,13 +63,21 @@ const AdminHome = () => {
             name: data.category, value: data.donatedAmount,
         }
     })
-
+    const pieChartStatsData = Object.entries(stats).map(([key, value]) => ({
+        name: key, 
+        value: Number(value) || 0
+    }));
+    const scaledPieChartStatsData = pieChartStatsData.map(item => ({
+        name: item.name,
+        value: Math.log(item.value + 1) // Log scale to reduce large differences
+    }));
+ 
     return (
-        <div>
+        <div className='-inset-0'>
             <Helmet><title>PA || DASHBOARD</title></Helmet>
             <h2 className='text-3xl font-semibold mb-3'>
                 <span>Hi, Welcome</span>
-                {user ? user.displayName : 'Back'}
+                <span>{user? user.displayName : 'Back'} Back</span>
             </h2>
             <div className="w-full flex items-center justify-evenly gap-3 shadow p-3">
                 <div className="bg-gray-200 dark:bg-gray-900 flex items-center gap-5 p-5">
@@ -76,7 +86,7 @@ const AdminHome = () => {
                     </div>
                     <div className='border-l-2 pl-2'>
                         <div className="text-xl">Users</div>
-                        <div className="stat-value">{stats.users}K</div>
+                        {isStatsLoading ? <p>Loading...</p> : <div className="stat-value">{stats.users || 0}K</div>}
                         <div className="stat-desc">Jan - Feb</div>
                     </div>
                 </div>
@@ -111,7 +121,7 @@ const AdminHome = () => {
                     </div>
                 </div>
             </div>
-            <div>
+            <div className='flex items-center mb-5'>
                 <div>
                     <BarChart
                         width={500}
@@ -134,11 +144,11 @@ const AdminHome = () => {
                         </Bar>
                     </BarChart>
                 </div>
-                <div>
+                <div className='h-[400px]'>
                     <ResponsiveContainer width="100%" height="100%">
                         <PieChart width={400} height={400}>
                             <Pie
-                                data={pieChartData}
+                                data={scaledPieChartStatsData}
                                 cx="50%"
                                 cy="50%"
                                 labelLine={false}
@@ -147,7 +157,7 @@ const AdminHome = () => {
                                 fill="#8884d8"
                                 dataKey="value"
                             >
-                                {pieChartData.map((entry, index) => (
+                                {scaledPieChartStatsData.map((entry, index) => (
                                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                                 ))}
                             </Pie>
@@ -155,6 +165,9 @@ const AdminHome = () => {
                         </PieChart>
                     </ResponsiveContainer>
                 </div>
+            </div>
+            <div>
+                <BarChartComponent/>
             </div>
         </div>
     );

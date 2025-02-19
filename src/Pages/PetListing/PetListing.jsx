@@ -15,7 +15,12 @@ const PetListing = () => {
     const fetchPets = async ({ pageParam = 1, queryKey }) => {
         const [_key, { search, category }] = queryKey;
         const response = await axiosPublic.get('/pets', {
-            params: { search, category, page: pageParam }
+            params: { 
+                search, 
+                category: category , 
+                page: pageParam ,
+                // sortBy: "category"
+            }
         })
         return response.data;
     }
@@ -34,6 +39,7 @@ const PetListing = () => {
         },
         staleTime: 0, 
         cacheTime: 0,
+        keepPreviousData: true,
     })
 
     const { ref, inView } = useInView({
@@ -49,6 +55,7 @@ const PetListing = () => {
 
     useEffect(()=>{
         refetch()
+        // console.log(category)
     }, [search, category, refetch])
 
     const navigateToDetails=(id)=>{
@@ -68,10 +75,10 @@ const PetListing = () => {
                     value={category}
                     onChange={(e) => setCategory(e.target.value)} >
                     <option value="">All Categories</option>
-                    <option value="Dog">Dog</option>
-                    <option value="Cat">Cat</option>
-                    <option value="Rabbit">Rabbit</option>
-                    <option value="Bird">Birds</option>
+                    <option value="dog">Dog</option>
+                    <option value="cat">Cat</option>
+                    <option value="rabbit">Rabbit</option>
+                    <option value="bird">Birds</option>
                 </select>
             </div>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
