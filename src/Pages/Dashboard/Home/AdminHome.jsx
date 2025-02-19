@@ -6,6 +6,7 @@ import useAxiosPrivate from '../../../Hooks/useAxiosPrivate';
 import { CatIcon, DogIcon, DollarSignIcon, Users } from 'lucide-react';
 import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, ResponsiveContainer, PieChart, Pie, Legend } from 'recharts';
 import BarChartComponent from './adminCharts/interactivity';
+import Barchart from './adminCharts/Barchart';
 
 const colors = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', 'red', 'pink'];
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
@@ -121,7 +122,7 @@ const AdminHome = () => {
                     </div>
                 </div>
             </div>
-            <div className='flex items-center mb-5'>
+            <div className='flex flex-col md:flex-row items-center mb-5'>
                 <div>
                     <BarChart
                         width={500}
@@ -166,8 +167,9 @@ const AdminHome = () => {
                     </ResponsiveContainer>
                 </div>
             </div>
-            <div>
+            <div className='flex flex-col md:flex-row items-center'>
                 <BarChartComponent/>
+                <Barchart/>
             </div>
         </div>
     );

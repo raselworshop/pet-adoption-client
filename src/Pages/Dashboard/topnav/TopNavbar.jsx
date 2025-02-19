@@ -11,7 +11,7 @@ const TopNavbar = () => {
     
     return (
         <div>
-            <div className="dark:bg-gray-900 lg:flex dark:text-white hidden justify-between p-4">
+            <div className="dark:bg-sky-900 lg:flex dark:text-white hidden justify-between p-4">
                 <ul className="flex gap-2">
                     <><li className='border-r-2  hover:text-blue-700'><Link className='flex justify-start gap-2' to={'/'}><HomeIcon />Home</Link></li></>
                     <><li className='border-r-2  hover:text-blue-700'><Link className='flex justify-start gap-2' to={'/dashboard/myCampaignsReport'}><IoCreateSharp className='text-2xl' />My Campaigns</Link></li></>
