@@ -10,6 +10,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import toast, { Toaster } from 'react-hot-toast';
 import FacebookLogin from './Pages/AuthRelated/SocialLogin/FacebookLogin'
 import { SidebarProvider } from './components/components/ui/sidebar';
+import { HelmetProvider } from 'react-helmet-async';
 
 const notify = () => toast('Here is your toast.');
 
@@ -20,6 +21,7 @@ Modal.setAppElement('#root');
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <AuthProvider>
+      <HelmetProvider>
       <QueryClientProvider client={queryClient}>
         <SidebarProvider>
           <ThemeProvider>
@@ -31,6 +33,7 @@ createRoot(document.getElementById('root')).render(
           </ThemeProvider>
         </SidebarProvider>
       </QueryClientProvider>
+      </HelmetProvider>
     </AuthProvider>
   </StrictMode>,
 )

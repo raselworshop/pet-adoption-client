@@ -1,25 +1,42 @@
-import React from "react";
+import React, { memo } from "react";
 import { Card, CardHeader, CardContent, CardTitle } from "../../../components/components/ui/card";
 import { Button } from "../../../components/components/ui/button";
 import { useNavigate } from "react-router-dom";
 
-import catImage from "../../../assets/Categories/cat.jpg";
-import dogImage from "../../../assets/Categories/dog.jpg";
+// import catImage from "../../../assets/Categories/cat.jpg";
+// import dogImage from "../../../assets/Categories/dog.jpg";
 import rabbitImage from "../../../assets/Categories/rabbit.jpg";
-import birdImage from "../../../assets/Categories/FavIcon.png";
+// import birdImage from "../../../assets/Categories/FavIcon.png";
 
 const petCategories = [
-  { name: "Cat", imageUrl: catImage },
-  { name: "Dog", imageUrl: dogImage },
+  { name: "Cat", imageUrl: "https://res.cloudinary.com/dgajyj2he/image/upload/v1746093601/cat_dqhnwz.jpg" },
+  { name: "Dog", imageUrl: "https://res.cloudinary.com/dgajyj2he/image/upload/v1735575105/samples/animals/three-dogs.jpg" },
   { name: "Rabbit", imageUrl: rabbitImage },
-  { name: "Bird", imageUrl: birdImage },
+  { name: "Bird", imageUrl: "https://res.cloudinary.com/dgajyj2he/image/upload/v1746093592/FavIcon_rwsaqy.png" },
 ];
 
-const PetsCategory = () => {
+const PetsCategory =memo(() => {
   const navigate = useNavigate();
 
+  // need to implement the preloading of images in a more efficient way.
+  // useEffect(() => {
+  //   const links = petCategories.slice(0, 2).map((category) => {
+  //     const link = document.createElement("link");
+  //     link.rel = "preload";
+  //     link.href = category.imageUrl;
+  //     link.as = "image";
+  //     document.head.appendChild(link);
+  //     return link;
+  //   });
+  
+  //   return () => {
+  //     links.forEach((link) => document.head.removeChild(link));
+  //   };
+  // }, []);
+
   const handleCategoryClick = (category) => {
-    navigate(`/petListing`);
+    // navigate(`/petListing`);
+    navigate(`/petListing?category=${encodeURIComponent(category)}`);
   };
 
   return (
@@ -36,6 +53,7 @@ const PetsCategory = () => {
                 src={category.imageUrl}
                 alt={category.name}
                 className="w-full h-full object-cover rounded-t-xl"
+                loading="lazy"
               />
             </CardHeader>
             <CardContent className="text-center py-4">
@@ -52,6 +70,6 @@ const PetsCategory = () => {
       </div>
     </div>
   );
-};
+});
 
 export default PetsCategory;

@@ -10,20 +10,20 @@ import 'react-phone-input-2/lib/style.css';
 import toast from 'react-hot-toast';
 import { Helmet } from 'react-helmet';
 import useAdoptedPet from '../../Hooks/useAdoptedPet';
-import useAxiosPublic from '../../Hooks/useAxiosPublic';
+import useAxiosPrivate from '../../Hooks/useAxiosPrivate';
 
 
 const PetDetails = () => {
     const { user } = useAuth()
     const { id } = useParams();
     const [pet, setPet] = useState(null)
-    const axiosPublic = useAxiosPublic()
+    const axiosPrivate = useAxiosPrivate()
     const { refetch } = useAdoptedPet()
 
     useEffect(() => {
         const fetchPet = async () => {
             try {
-                const response = await axiosPublic.get(`/pets/${id}`)
+                const response = await axiosPrivate.get(`/pets/${id}`)
                 // console.log(response.data)
                 setPet(response.data)
             } catch (error) {
@@ -32,7 +32,7 @@ const PetDetails = () => {
             }
         }
         fetchPet()
-    }, [id, axiosPublic])
+    }, [id, axiosPrivate])
 
     const handleSubmit = async (values) => {
         const adoptionData = {
