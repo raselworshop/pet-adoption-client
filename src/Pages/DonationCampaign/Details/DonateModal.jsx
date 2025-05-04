@@ -140,9 +140,9 @@ const DonateForm = ({ onClose, campaignId, category }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-gray-800 bg-opacity-5 flex justify-center items-center">
-      <div className="dark:bg-white/90 dark:text-black bg-white p-6 rounded shadow-lg w-96">
-        <h2 className="text-lg font-bold mb-4">Enter Donation Details</h2>
+    <div className="fixed inset-0 z-50 bg-gray-800 bg-opacity-5 flex justify-center items-center">
+      <div className="dark:bg-white dark:text-black bg-white p-6 rounded shadow-lg w-96">
+        <h2 className="text-lg font-bold my-4">Enter Donation Details</h2>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-4">
             <label
@@ -226,7 +226,7 @@ const DonateForm = ({ onClose, campaignId, category }) => {
           ) : (
             <Button
               type="submit"
-              className="px-4 py-2 rounded w-full"
+              className="px-4 rounded w-full"
               disabled={!stripe || !amount || parseFloat(amount) <= 0}
             >
               Donate
@@ -234,9 +234,9 @@ const DonateForm = ({ onClose, campaignId, category }) => {
           )}
         </form>
 
-        <Button className="text-red-500 mt-4" onClick={onClose}>
+        <div className="flex items-center w-full"><Button className="text-red-500" onClick={onClose}>
           Close
-        </Button>
+        </Button></div>
       </div>
       {showSuccessModal && (
         <SuccessModal
