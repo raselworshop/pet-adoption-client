@@ -26,6 +26,7 @@ import AdminHome from "../Pages/Dashboard/Home/AdminHome";
 import ErrorPage from "../Pages/ErrorPage/ErrorPage";
 import AdminRoute from "./AdminRoute";
 import PrivateRoute from "./PrivateRoute";
+import Profile from "../Pages/Home/Profile/Profile";
 
 const router = createBrowserRouter([
     {
@@ -56,6 +57,10 @@ const router = createBrowserRouter([
         {
             path: 'reset-password',
             element: <ResetPassword/>
+        },
+        {
+            path: 'profile/:userName',
+            element: <PrivateRoute><Profile/></PrivateRoute>
         }
       ]
     },

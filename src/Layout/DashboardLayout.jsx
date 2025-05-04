@@ -22,7 +22,7 @@ const DashboardLayout = () => {
       <div className="w-full">
         {/* this sect is navbar need to position fixed */}
         <div className="fixed top-0 right-0 z-40 w-full">
-          <div className="flex items-center justify-evenly py-4 lg:py-0 dark:bg-sky-900 bg-gray-300">
+          <div className="flex items-center justify-between py-4 lg:py-0 dark:bg-sky-900 bg-gray-300">
             <h2 className="ml-8 text-3xl font-semibold text-gray-800 dark:text-gray-200 text-center">
               Dashboard
             </h2>

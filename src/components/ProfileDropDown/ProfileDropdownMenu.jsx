@@ -17,13 +17,14 @@ import {
     DropdownMenuSeparator,
     DropdownMenuShortcut,
 } from "../components/ui/dropdown-menu"
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../../Hooks/useAuth";
 import toast from "react-hot-toast";
 import Badge from "../Shared/Badge";
 
 export function ProfileDropdownMenu() {
-    const { user, signOutUser } = useAuth()
+    const { user, signOutUser } = useAuth();
+    const navigate = useNavigate();
     const handleSignOut=()=>{
         signOutUser()
         .then(()=>{
@@ -33,13 +34,18 @@ export function ProfileDropdownMenu() {
     const enactiveButtonClik=()=>{
         toast.success("This feature is on the way")
     }
+
+    const handleProfileClick = () =>{
+        navigate(`/profile/${user?.displayName}`)
+    }
+
     return (
         <>
         {user && <DropdownMenuContent className="w-56">
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-                <DropdownMenuItem onClick={enactiveButtonClik}>
+                <DropdownMenuItem onClick={handleProfileClick}>
                     <User />
                     <span>Profile</span>
                     <DropdownMenuShortcut>{user?.email}</DropdownMenuShortcut>

@@ -18,7 +18,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuShortcut,
 } from "../components/ui/dropdown-menu"
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../../Hooks/useAuth";
 import toast from "react-hot-toast";
 import Badge from "../Shared/Badge";
@@ -26,12 +26,18 @@ import ToggleMode from "../../Providers/Toggle/ToggleMode";
 
 export function MobileMenu() {
     const { user, signOutUser } = useAuth()
+    const navigate = useNavigate();
     const handleSignOut = () => {
         signOutUser()
             .then(() => {
                 toast.success("You're logged out succesfull")
             })
     }
+
+    const handleProfileClick = () =>{
+        navigate(`/profile/${user?.displayName}`)
+    }
+
     return (
 
         <>
@@ -50,7 +56,7 @@ export function MobileMenu() {
                     </Link>
                     <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => toast.success("This feature is on the way")}>
+                <DropdownMenuItem onClick={handleProfileClick}>
                     <User />
                     <span>Profile</span>
                     <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
