@@ -41,7 +41,10 @@ const SimpleSlider = memo(() => {
     <Helmet>
         <link rel="preload" href={slides[0].src} as="image" />
       </Helmet>
-    <Slider {...settings}>
+    <Slider 
+    {...settings}
+      className="overflow-hidden [&_.slick-slide>div]:!mx-0 [&_.slick-arrow]:!right-0 [&_.slick-arrow]:!z-10"
+    >
       {slides.map((slide, index) => (
         <div key={index} className="relative w-full h-[70vh] overflow-hidden">
           <img src={slide.src} alt={`Slide ${index + 1}`} loading="lazy" className="w-full h-full object-cover" />

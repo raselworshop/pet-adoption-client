@@ -22,6 +22,7 @@ import { Link } from "react-router-dom";
 import useAuth from "../../Hooks/useAuth";
 import toast from "react-hot-toast";
 import Badge from "../Shared/Badge";
+import ToggleMode from "../../Providers/Toggle/ToggleMode";
 
 export function MobileMenu() {
     const { user, signOutUser } = useAuth()
@@ -34,7 +35,9 @@ export function MobileMenu() {
     return (
 
         <>
-            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            <DropdownMenuLabel>
+                <div className="flex justify-between items-center">My Account <ToggleMode /></div>
+                </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
                 <DropdownMenuItem>

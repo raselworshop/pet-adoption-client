@@ -37,21 +37,13 @@ const Navbar = () => {
 
     return (
         <header className="fixed top-0 left-0 w-full bg-sky-200 dark:bg-gray-900 bg-opacity-90 shadow-md dark:shadow-lg backdrop-blur-lg z-50">
-            <nav className="max-w-7xl mx-auto flex justify-between items-center py-4">
+            <nav className="max-w-7xl mx-auto flex justify-between items-center py-4 px2">
                 {/* Logo & Title */}
-                <div className="flex items-center space-x-3">
+                <div className="flex flex-shrink-0 gap-2 sm:justify-between items-center space-x-3">
                     <img src={logo} alt="Pet Adoption" className="w-10 h-10 rounded-full shadow-md" />
                     <NavLink to="/" className="text-xl font-bold text-gray-800 dark:text-white hover:text-blue-500 transition">
                         Pet Adoption
                     </NavLink>
-                </div>
-
-                {/* Mobile Menu Button */}
-                <div className="lg:hidden flex items-center space-x-4">
-                    <ToggleMode />
-                    <button onClick={toggleMenu} className="text-gray-700 dark:text-gray-300 text-xl">
-                        {isOpen ? <XIcon className="w-6 h-6" /> : <MenuIcon className="w-6 h-6" />}
-                    </button>
                 </div>
 
                 {/* Desktop Navigation */}
@@ -96,7 +88,7 @@ const Navbar = () => {
                                             </div>
                                             <Avatar className="shadow-md border border-gray-300 dark:border-gray-700">
                                                 <AvatarImage src={user?.photoURL} />
-                                                <AvatarFallback>CN</AvatarFallback>
+                                                <AvatarFallback>{user?.displayName?.[0].charAt(0).toUpperCase() || ""}</AvatarFallback>
                                             </Avatar>
                                         </div>
                                     </DropdownMenuTrigger>
@@ -111,14 +103,22 @@ const Navbar = () => {
                         </NavigationMenuList>
                     </NavigationMenu>
                 </div>
-            </nav>
 
-            {/* Mobile Navigation Menu */}
-            {isOpen && (
-                <div className="lg:hidden flex flex-col bg-gray-800 dark:bg-gray-900 text-white absolute top-16 left-0 w-full py-5 space-y-4 text-center shadow-lg rounded-b-lg">
-                    <MobileMenu />
+                {/* Mobile Navigation Menu */}
+                <div className={`lg:hidden flex flex-col text-center shadow-lg rounded-b-lg ${isOpen ? 'overflow-hidden' : ''}`}>
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <button onClick={toggleMenu} className="text-gray-700 dark:text-gray-300 text-xl">
+                        {isOpen ? <XIcon className="w-6 h-6" /> : <MenuIcon className="w-6 h-6" />}
+                    </button>
+                            
+                        </DropdownMenuTrigger>
+                        {isOpen && <DropdownMenuContent>
+                            <MobileMenu />
+                        </DropdownMenuContent>}
+                    </DropdownMenu>
                 </div>
-            )}
+            </nav>
         </header>
     );
 };
