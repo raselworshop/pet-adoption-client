@@ -104,7 +104,7 @@ const AdminHome = () => {
   console.log("Pie Chart Data:", scaledPieChartStatsData);
 
   return (
-    <div className="-inset-0">
+    <div className=" grid justify-center items-center">
       <Helmet>
         <title>PA || DASHBOARD</title>
       </Helmet>
