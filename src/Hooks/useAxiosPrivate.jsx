@@ -2,8 +2,8 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import useAuth from './useAuth';
 
-const axiosPrivate = axios.create({
-    baseURL: `http://localhost:5000`,//https://pet-adoption-server-opal.vercel.app
+const axiosPrivate = axios.create({ //http://localhost:5000
+    baseURL: `https://pet-adoption-server-opal.vercel.app`,//https://pet-adoption-server-opal.vercel.app
     withCredentials: true
 })
 const useAxiosPrivate = () => {
