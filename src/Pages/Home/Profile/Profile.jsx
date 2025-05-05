@@ -4,10 +4,13 @@ import { MdEmail, MdCake } from "react-icons/md";
 import toast from "react-hot-toast";
 import useAuth from "../../../Hooks/useAuth";
 import { updateProfile } from "firebase/auth";
+import useAxiosPrivate from "../../../Hooks/useAxiosPrivate";
 
 const Profile = () => {
   const [editMode, setEditMode] = useState(false);
   const { user } = useAuth();
+  const axiosPrivate = useAxiosPrivate()
+  const [loading, setLoading] = useState(false);
 
   const [userData, setUserData] = useState({
     name: user?.displayName || "John Doe",
@@ -49,13 +52,12 @@ const Profile = () => {
     // Fetch username and role from MongoDB
     const fetchUserData = async () => {
       try {
-        const response = await fetch(`/api/user/${user?.email}`);
+        const response = await axiosPrivate.get(`/api/user/${user?.email}`);
         if (response.ok) {
-          const data = await response.json();
           setUserData((prev) => ({
             ...prev,
-            username: data.userName || prev.username,
-            role: data.role || prev.role,
+            username: response.data.userName || prev.username,
+            role: response.data.role || prev.role,
           }));
         }
       } catch (error) {
@@ -137,22 +139,16 @@ const Profile = () => {
           });
 
           // Save to MongoDB (only specific fields)
-        //   const response = await fetch("/api/update-profile", {
-        //     method: "POST",
-        //     headers: {
-        //       "Content-Type": "application/json",
-        //     },
-        //     body: JSON.stringify({
-        //       name: userData.name,
-        //       email: userData.email,
-        //       photo: userData.photo,
-        //       userName: userData.username,
-        //     }),
-        //   });
+          const response = await axiosPrivate.post("/api/update-profile", {
+              name: userData.name,
+              email: userData.email,
+              photo: userData.photo,
+              userName: userData.username, 
+          });
 
-        //   if (!response.ok) {
-        //     throw new Error("Failed to update profile in MongoDB");
-        //   }
+          if (!response.ok) {
+            throw new Error("Failed to update profile in MongoDB");
+          }
 
           toast.success("Profile updated successfully ✅");
         } catch (error) {
@@ -362,3 +358,33 @@ const Profile = () => {
 };
 
 export default Profile;
+
+// ```javascript
+
+
+
+
+// // Admin-only: Update user role
+// app.post('/api/admin/update-role', verifyToken, verifyAdmin, async (req, res) => {
+//   const { email, role } = req.body;
+//   if (!email || !role) {
+//     return res.status(400).send({ message: 'Email and role are required' });
+//   }
+//   if (!['user', 'admin', 'verified adopter'].includes(role)) {
+//     return res.status(400).send({ message: 'Invalid role' });
+//   }
+//   try {
+//     const result = await usersCollection.updateOne(
+//       { email },
+//       { $set: { role } }
+//     );
+//     if (result.matchedCount === 0) {
+//       return res.status(404).send({ message: 'User not found' });
+//     }
+//     res.send({ message: 'Role updated successfully' });
+//   } catch (error) {
+//     console.error('Error updating role:', error);
+//     res.status(500).send({ message: 'Failed to update role' });
+//   }
+// });
+// ```
